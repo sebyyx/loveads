@@ -61,5 +61,5 @@ if (!empty($_POST['name']) && (!empty($_POST['phone']) || !empty($_POST['email']
     );
 }
 
-header('Location: http://loveads.ro');
+header('Location: https://www.loveads.ro');
 exit;
