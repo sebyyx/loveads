@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($message) $body .= "Message: {$message}\n";
         $headers  = "From: noreply@loveads.ro\r\n";
         $headers .= "Reply-To: " . ($email ?: 'noreply@loveads.ro') . "\r\n";
-        mail($mail_to, $subject, $body, $headers);
     }
 }
 
