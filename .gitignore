@@ -1,0 +1,17 @@
+# Credentials — never commit
+config.php
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+error_log
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
