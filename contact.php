@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $mail_to = 'sebastian.cosmor@loveads.ro';
 
@@ -23,5 +25,6 @@ if (!empty($_POST['name']) && (!empty($_POST['phone']) || !empty($_POST['email']
     mail($mail_to, $subject, $body, $headers);
 }
 
-header('Location: https://www.loveads.ro');
+header('Content-Type: application/json');
+echo json_encode(['success' => true]);
 exit;

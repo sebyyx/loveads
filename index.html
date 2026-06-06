@@ -395,7 +395,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label">Phone</label>
-                <input type="tel" name="phone" class="form-input" placeholder="Your phone number">
+                <input type="tel" name="phone" class="form-input" placeholder="Your phone number" pattern="[0-9+\s\(\)\-]{7,20}" title="Please enter a valid phone number (min. 7 digits)">
               </div>
               <div class="col-12">
                 <label class="form-label">Email</label>
@@ -494,6 +494,48 @@
         }
       });
     });
+
+    // Contact form — AJAX submission + success message
+    var contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        var btn = this.querySelector('button[type="submit"]');
+        var originalText = btn.textContent;
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+
+        try {
+          var res = await fetch('contact.php', {
+            method: 'POST',
+            body: new FormData(this)
+          });
+
+          if (res.ok) {
+            this.innerHTML = [
+              '<div class="form-success">',
+              '  <div class="form-success-icon"><i class="bi bi-check-circle-fill"></i></div>',
+              '  <h3>Message Sent!</h3>',
+              '  <p>Thank you for reaching out. We\'ll get back to you shortly.</p>',
+              '</div>'
+            ].join('');
+          } else {
+            throw new Error('Server error');
+          }
+        } catch (err) {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          var errorEl = this.querySelector('.form-error');
+          if (!errorEl) {
+            errorEl = document.createElement('p');
+            errorEl.className = 'form-error';
+            errorEl.textContent = 'Something went wrong. Please try again or email us directly.';
+            this.appendChild(errorEl);
+          }
+        }
+      });
+    }
 
     // Scroll-reveal animations (Intersection Observer API)
     if ('IntersectionObserver' in window) {
