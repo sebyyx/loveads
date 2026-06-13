@@ -24,7 +24,13 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+html, body.cp { max-width: 100%; }
+
+/* Large Bootstrap gutters overflow a full-width container on phones. */
+@media (max-width: 575.98px) {
+  .cp .row.g-5, .cp .row.g-4 { --bs-gutter-x: 1.5rem; }
+}
 
 body.cp {
   background: var(--cp-bg);
@@ -497,4 +503,6 @@ body.cp {
   .cp .section { padding: 64px 0; }
   .cp-hero { padding: 120px 0 56px; }
   .cp-kpis { grid-template-columns: 1fr; }
+  .cp-loop { flex-direction: column; align-items: stretch; }
+  .cp-loop-step { flex: none; width: 100%; }
 }
