@@ -1,0 +1,62 @@
+# LoveAds
+
+> Love Ads Marketing SRL (loveads.ro) is a Romania-based company offering product
+> strategy consulting and LoveAds Copilot, a profit-analytics SaaS for e-commerce
+> advertisers. Copilot unifies Google Ads, Meta Ads and Shopify data to show real
+> profit (POAS), detect money leaks, and recommend prioritized actions in plain language.
+
+## About the company
+
+- Legal name: Love Ads Marketing SRL
+- Registration: CUI RO39641531, J40/10343/2018
+- Location: Șos. București Nord Nr. 10E, Voluntari, Ilfov, Romania
+- Contact: sebastian.cosmor@loveads.ro
+- Website: https://loveads.ro
+
+## Products & services
+
+- [Product strategy consulting](https://loveads.ro/): helping founders and product teams
+  define what to build, plan how to build it, and align on a clear strategy before development.
+- [LoveAds Copilot](https://loveads.ro/copilot/): a profit copilot for Google Ads, Meta and
+  Shopify. The live app is at https://copilot.loveads.ro.
+
+## What LoveAds Copilot does
+
+LoveAds Copilot answers three questions and closes the loop on every decision:
+
+1. What happened — unified, de-duplicated profit across all channels (Google Ads, Meta, Shopify).
+2. Why — the reasons behind changes, including account change history.
+3. What to do next — prioritized actions with the euro impact, in plain English.
+4. Did it work — every action is tracked and reviewed, building a playbook of what works.
+
+Key concepts:
+- POAS (Profit on Ad Spend): revenue minus real product cost, used instead of vanity ROAS so
+  advertisers optimize for actual profit.
+- Money-leak detection: surfaces overspending campaigns, disapproved products and tracking
+  breaks, each with the euro at risk per week and a fix.
+- Decision loop: Detect → Recommend → Act → Review → Learn — institutional memory plus an
+  accountable AI that grades its own past predictions.
+- Read-only and secure: Copilot reads ad and store data via OAuth to advise; it never edits
+  campaigns, products, or checkout.
+
+## Pricing
+
+- Founding — €99/month — first 100 customers, price locked for life.
+- Growth — €199/month — €5k–25k monthly ad spend; adds Meta, Search & Product Intelligence.
+- Scale — €399/month — €25k–100k spend; adds TikTok, Creative Intelligence, Advanced AAR.
+- Pro — €799/month — €100k–500k spend; multi-brand, multi-store, forecasting, priority support.
+
+Self-serve sign-up with card payment (Stripe); 14-day trial.
+
+## Who it's for
+
+- E-commerce brands and store owners running their own Google Ads, Meta and Shopify.
+- Marketing agencies managing multiple clients (portfolio view + per-client intelligence).
+
+## Links
+
+- Homepage: https://loveads.ro/
+- Copilot landing page: https://loveads.ro/copilot/
+- Copilot app: https://copilot.loveads.ro
+- Privacy policy: https://loveads.ro/privacy-policy.html
+- Terms & conditions: https://loveads.ro/terms.html

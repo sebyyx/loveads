@@ -144,6 +144,11 @@ body.cp {
 }
 .cp-brand b { font-size: 18px; font-weight: 800; color: var(--cp-ink); letter-spacing: -0.03em; }
 .cp-brand span { font-size: 18px; font-weight: 500; color: var(--cp-muted); letter-spacing: -0.02em; }
+.cp-logo-img { height: 28px; width: auto; display: block; }
+.cp-brand-suffix {
+  font-size: 18px; font-weight: 500; color: var(--cp-muted); letter-spacing: -0.02em;
+  padding-left: 10px; margin-left: 2px; border-left: 1px solid var(--cp-border-strong); line-height: 1;
+}
 .cp-nav-links { display: flex; align-items: center; gap: 8px; }
 .cp-nav-links a.lnk {
   font-size: 14px; font-weight: 500; color: var(--cp-text);
@@ -402,6 +407,48 @@ body.cp {
 .cp-price .p-for { font-size: 13.5px; color: var(--cp-text); margin: 14px 0 20px; line-height: 1.5; flex-grow: 1; }
 .cp-price .btn { width: 100%; justify-content: center; }
 .cp-price-note { text-align: center; font-size: 14px; color: var(--cp-muted); margin-top: 28px; }
+
+/* =================================================
+   FAQ
+   ================================================= */
+.cp-faq { max-width: 820px; margin: 0 auto; }
+.cp-faq-item {
+  border: 1px solid var(--cp-border);
+  border-radius: 12px;
+  background: #fff;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.cp-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cp-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.cp-faq-item summary::-webkit-details-marker { display: none; }
+.cp-faq-item summary::after {
+  content: "\F4FE"; /* bi-plus */
+  font-family: "bootstrap-icons";
+  font-size: 18px; font-weight: 400;
+  color: var(--cp-accent);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.cp-faq-item[open] summary::after { content: "\F2EA"; /* bi-dash */ }
+.cp-faq-item summary:hover { color: var(--cp-accent); }
+.cp-faq-item p {
+  margin: 0;
+  padding: 0 22px 20px;
+  font-size: 15px;
+  color: var(--cp-text);
+  line-height: 1.65;
+}
 
 /* =================================================
    TRUST + FINAL CTA

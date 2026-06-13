@@ -159,6 +159,20 @@ a:hover { color: var(--text-primary); }
   letter-spacing: -0.03em;
 }
 
+.brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+#mainNav.scrolled .brand-logo { height: 28px; }
+
+.footer-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+  margin-bottom: 14px;
+}
+
 .nav-link {
   color: var(--text-secondary) !important;
   font-weight: 500;
