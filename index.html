@@ -405,6 +405,11 @@
                 <label class="form-label">Tell us about your project</label>
                 <textarea name="message" class="form-input form-textarea" placeholder="What are you building? Where are you stuck? What do you need help with?" rows="5"></textarea>
               </div>
+              <!-- Honeypot: hidden from people, bots fill it in -->
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;">
+                <label>Company website (leave empty)</label>
+                <input type="text" name="company_website" tabindex="-1" autocomplete="off">
+              </div>
               <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-lg w-100">Send Message</button>
               </div>
@@ -498,6 +503,7 @@
     // Contact form — AJAX submission + success message
     var contactForm = document.querySelector('.contact-form');
     if (contactForm) {
+      var formLoadTime = Date.now();
       contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -507,9 +513,13 @@
         btn.disabled = true;
 
         try {
+          var fd = new FormData(this);
+          fd.append('_js', '1');
+          fd.append('_elapsed', Date.now() - formLoadTime);
+
           var res = await fetch('contact.php', {
             method: 'POST',
-            body: new FormData(this)
+            body: fd
           });
 
           if (res.ok) {
