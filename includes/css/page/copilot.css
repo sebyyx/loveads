@@ -221,7 +221,7 @@ body.cp {
 .cp-mock-bar span { font-size: 12px; color: var(--cp-muted); font-weight: 500; }
 .cp-mock-dots { margin-left: auto; display: flex; gap: 5px; }
 .cp-mock-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--cp-border-strong); }
-.cp-mock-body { padding: 20px; }
+.cp-mock-body { padding: 20px; display: grid; }
 .cp-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 .cp-kpi {
   border: 1px solid var(--cp-border);
@@ -509,8 +509,8 @@ body.cp {
 }
 .cp-tab:hover { color: var(--cp-ink); }
 .cp-tab.is-active { color: var(--cp-accent); border-bottom-color: var(--cp-accent); background: #fff; }
-.cp-view { display: none; animation: cpFade .35s ease; }
-.cp-view.is-active { display: block; }
+.cp-view { grid-area: 1 / 1; opacity: 0; visibility: hidden; pointer-events: none; }
+.cp-view.is-active { opacity: 1; visibility: visible; pointer-events: auto; animation: cpFade .35s ease; }
 @keyframes cpFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .cp-leaklist { display: flex; flex-direction: column; gap: 8px; }
