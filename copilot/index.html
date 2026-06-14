@@ -151,7 +151,7 @@
           <a class="lnk" href="#features">Features</a>
           <a class="lnk" href="#pricing">Pricing</a>
           <a class="lnk" href="#faq">FAQ</a>
-          <a class="btn btn-primary" href="https://copilot.loveads.ro">Open Copilot <i class="bi bi-arrow-right"></i></a>
+          <a class="btn btn-primary" href="https://copilot.loveads.ro/signup">Open Copilot <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -167,39 +167,62 @@
           <h1 class="cp-hero-title reveal" style="--d:1">Your profit copilot for <span class="hl">Google Ads, Meta &amp; Shopify.</span></h1>
           <p class="cp-hero-sub reveal" style="--d:2">LoveAds Copilot connects your Google Ads, Meta Ads and Shopify in one place and tells you what's making money, what's leaking it, and exactly what to do next — in plain language, not dashboards. It tracks every decision and whether it worked, so your marketing gets smarter over time.</p>
           <div class="cp-hero-actions reveal" style="--d:3">
-            <a class="btn btn-primary btn-lg" href="https://copilot.loveads.ro">Open Copilot <i class="bi bi-arrow-right"></i></a>
+            <a class="btn btn-primary btn-lg" href="https://copilot.loveads.ro/signup">Open Copilot <i class="bi bi-arrow-right"></i></a>
             <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
           </div>
           <p class="cp-hero-note reveal" style="--d:4"><i class="bi bi-shield-check"></i> Read-only &amp; secure · 14-day trial · Connect in one click</p>
         </div>
         <div class="col-lg-6">
-          <div class="cp-mock reveal" style="--d:3">
+          <div class="cp-mock reveal" style="--d:3" id="heroMock">
             <div class="cp-mock-bar">
               <i class="bi bi-grid-1x2-fill"></i>
-              <span>Overview · Last 30 days</span>
+              <span class="cp-mock-headline">Your control tower · Last 30 days</span>
               <span class="cp-mock-dots"><i></i><i></i><i></i></span>
             </div>
+            <div class="cp-mock-tabs" role="tablist">
+              <button class="cp-tab is-active" type="button" data-view="overview">Overview</button>
+              <button class="cp-tab" type="button" data-view="leak">Money leak</button>
+              <button class="cp-tab" type="button" data-view="report">AI report</button>
+            </div>
             <div class="cp-mock-body">
-              <div class="cp-kpis">
-                <div class="cp-kpi">
-                  <div class="k-label">Profit</div>
-                  <div class="k-value mono">€18,240</div>
-                  <div class="k-delta up">▲ 12.4%</div>
+              <!-- Overview -->
+              <div class="cp-view is-active" data-view="overview">
+                <div class="cp-kpis">
+                  <div class="cp-kpi">
+                    <div class="k-label">Profit</div>
+                    <div class="k-value mono" data-count="18240" data-prefix="€">€18,240</div>
+                    <div class="k-delta up">▲ 12.4%</div>
+                  </div>
+                  <div class="cp-kpi">
+                    <div class="k-label">ROAS</div>
+                    <div class="k-value mono" data-count="4.1" data-decimals="1" data-suffix="×">4.1×</div>
+                    <div class="k-delta down">▼ 0.3×</div>
+                  </div>
+                  <div class="cp-kpi">
+                    <div class="k-label">POAS</div>
+                    <div class="k-value mono" data-count="1.9" data-decimals="1" data-suffix="×">1.9×</div>
+                    <div class="k-delta up">▲ 0.2×</div>
+                  </div>
                 </div>
-                <div class="cp-kpi">
-                  <div class="k-label">ROAS</div>
-                  <div class="k-value mono">4.1×</div>
-                  <div class="k-delta down">▼ 0.3×</div>
-                </div>
-                <div class="cp-kpi">
-                  <div class="k-label">POAS</div>
-                  <div class="k-value mono">1.9×</div>
-                  <div class="k-delta up">▲ 0.2×</div>
+                <div class="cp-leak">
+                  <span class="lk-ic"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                  <span class="lk-txt">Money leak — "Summer Sale" campaign is overspending. <b>€430/week at risk.</b> Cap budget to fix.</span>
                 </div>
               </div>
-              <div class="cp-leak">
-                <span class="lk-ic"><i class="bi bi-exclamation-triangle-fill"></i></span>
-                <span class="lk-txt">Money leak — "Summer Sale" campaign is overspending. <b>€430/week at risk.</b> Cap budget to fix.</span>
+              <!-- Money leak -->
+              <div class="cp-view" data-view="leak">
+                <div class="cp-leaklist">
+                  <div class="cp-leakrow"><span class="lr-dot warn"></span> "Summer Sale" overspending <b class="lr-amt warn">€430/wk</b></div>
+                  <div class="cp-leakrow"><span class="lr-dot warn"></span> 12 products disapproved <b class="lr-amt warn">€180/wk</b></div>
+                  <div class="cp-leakrow"><span class="lr-dot ok"></span> Conversion tracking healthy <b class="lr-amt ok">OK</b></div>
+                </div>
+                <div class="cp-leak-total">Total at risk <b class="mono" data-count="610" data-prefix="€" data-suffix="/week">€610/week</b></div>
+              </div>
+              <!-- AI report -->
+              <div class="cp-view" data-view="report">
+                <div class="cp-report-head"><i class="bi bi-stars"></i> Weekly Executive Report</div>
+                <p class="cp-report-body">Profit is up <b>12.4%</b> to <b>€18,240</b>. Meta drove the gain; Google Search softened. One leak is costing you money.</p>
+                <div class="cp-report-action"><span>Top action</span> Cap "Summer Sale" budget <b class="mono">+€430/wk</b></div>
               </div>
             </div>
           </div>
@@ -274,25 +297,72 @@
           <div class="cp-stat-card">
             <div class="cp-stat-row">
               <span class="s-label">Revenue (attributed)</span>
-              <span class="s-val mono">€41,000</span>
+              <span class="s-val mono" data-count="41000" data-prefix="€">€41,000</span>
             </div>
             <div class="cp-stat-row">
               <span class="s-label">Ad spend</span>
-              <span class="s-val mono">€10,000</span>
+              <span class="s-val mono" data-count="10000" data-prefix="€">€10,000</span>
             </div>
             <div class="cp-stat-row">
               <span class="s-label">ROAS</span>
-              <span class="s-val mono">4.1×</span>
+              <span class="s-val mono" data-count="4.1" data-decimals="1" data-suffix="×">4.1×</span>
             </div>
             <div class="cp-stat-row">
               <span class="s-label">Product &amp; fulfilment cost</span>
-              <span class="s-val mono">−€22,000</span>
+              <span class="s-val mono" data-count="22000" data-prefix="−€">−€22,000</span>
             </div>
             <div class="cp-stat-row">
               <span class="s-label"><b>POAS — real profit on spend</b></span>
-              <span class="s-val accent mono">1.9×</span>
+              <span class="s-val accent mono" data-count="1.9" data-decimals="1" data-suffix="×">1.9×</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ POAS CALCULATOR ============================ -->
+  <section class="section cp-calc-section" id="calculator">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Try it on your numbers</span>
+        <h2 class="section-title">What's your real profit?</h2>
+        <p class="section-sub">Drag the sliders to your monthly figures and see what ROAS hides — and what your POAS really is.</p>
+      </div>
+      <div class="cp-calc reveal" style="--d:1" id="poasCalc">
+        <div class="cp-calc-inputs">
+          <div class="cp-calc-field">
+            <label>Monthly revenue from ads <output class="cc-out" id="ccRevOut">€41,000</output></label>
+            <input type="range" id="ccRev" min="5000" max="200000" step="1000" value="41000">
+          </div>
+          <div class="cp-calc-field">
+            <label>Monthly ad spend <output class="cc-out" id="ccSpendOut">€10,000</output></label>
+            <input type="range" id="ccSpend" min="1000" max="100000" step="500" value="10000">
+          </div>
+          <div class="cp-calc-field">
+            <label>Product &amp; fulfilment cost <output class="cc-out" id="ccCogsOut">54% of revenue</output></label>
+            <input type="range" id="ccCogs" min="10" max="85" step="1" value="54">
+          </div>
+        </div>
+        <div class="cp-calc-results">
+          <div class="cp-calc-grid">
+            <div class="cc-stat vanity">
+              <div class="cc-label">ROAS <span class="cc-tag">vanity</span></div>
+              <div class="cc-val mono" id="ccRoas">4.1×</div>
+              <div class="cc-sub">Looks great…</div>
+            </div>
+            <div class="cc-stat truth">
+              <div class="cc-label">POAS <span class="cc-tag">real</span></div>
+              <div class="cc-val mono" id="ccPoas">1.9×</div>
+              <div class="cc-sub">…the truth</div>
+            </div>
+          </div>
+          <div class="cp-calc-profit" id="ccProfitBox">
+            <div class="cc-profit-label">Your real monthly profit on ad spend</div>
+            <div class="cc-profit-val mono" id="ccProfit">€9,000</div>
+            <div class="cc-profit-note" id="ccNote">You keep €0.22 of every €1 of revenue after product cost and ad spend.</div>
+          </div>
+          <a class="btn btn-primary btn-lg cc-cta" href="https://copilot.loveads.ro/signup">See this live on your data <i class="bi bi-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -310,14 +380,14 @@
         <div class="col-md-6 reveal" style="--d:1">
           <div class="cp-money leak">
             <div class="m-tag"><i class="bi bi-exclamation-triangle-fill"></i> Money leak detected</div>
-            <div class="m-amt">€430 <small>/ week at risk</small></div>
+            <div class="m-amt"><span data-count="430" data-prefix="€">€430</span> <small>/ week at risk</small></div>
             <p class="m-desc">Overspending campaigns, disapproved products eating budget, tracking breaks — each surfaced with a one-line fix.</p>
           </div>
         </div>
         <div class="col-md-6 reveal" style="--d:2">
           <div class="cp-money gain">
             <div class="m-tag"><i class="bi bi-graph-up-arrow"></i> Growth opportunity</div>
-            <div class="m-amt">+€1,200 <small>/ month upside</small></div>
+            <div class="m-amt"><span data-count="1200" data-prefix="+€">+€1,200</span> <small>/ month upside</small></div>
             <p class="m-desc">Where to scale next, with the upside quantified — so budget goes into what's actually profitable.</p>
           </div>
         </div>
@@ -355,69 +425,84 @@
         <h2 class="section-title">Everything in one control tower</h2>
         <p class="section-sub">Built for owners, not analysts — the plain-language summary <i>is</i> the product.</p>
       </div>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-4 reveal" style="--d:1">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-diagram-3"></i></div>
-            <h3>Unify Google, Meta &amp; Shopify</h3>
-            <p>All ad spend and true store revenue in one place — de-duplicated so a sale isn't double-counted.</p>
-          </div>
+      <div class="cp-tabs-wrap reveal" style="--d:1" id="featTabs">
+        <div class="cp-tabbar" role="tablist">
+          <button class="cp-ftab is-active" type="button" data-tab="0"><i class="bi bi-diagram-3"></i> Unify</button>
+          <button class="cp-ftab" type="button" data-tab="1"><i class="bi bi-cash-stack"></i> Real profit</button>
+          <button class="cp-ftab" type="button" data-tab="2"><i class="bi bi-graph-up-arrow"></i> Leaks &amp; growth</button>
+          <button class="cp-ftab" type="button" data-tab="3"><i class="bi bi-file-earmark-text"></i> Reports</button>
+          <button class="cp-ftab" type="button" data-tab="4"><i class="bi bi-bell"></i> Stay ahead</button>
         </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:2">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-cash-stack"></i></div>
-            <h3>Real profit (POAS)</h3>
-            <p>Profit on Ad Spend — revenue minus real product cost — so you optimize for money, not vanity ROAS.</p>
+
+        <div class="cp-tabpanels">
+          <!-- 0 Unify -->
+          <div class="cp-tabpanel is-active" data-tab="0">
+            <div class="cp-tp-text">
+              <h3>Unify Google, Meta &amp; Shopify</h3>
+              <p>All your ad spend and true store revenue in one place — de-duplicated, so the same sale isn't counted twice by two platforms. One number you can trust.</p>
+            </div>
+            <div class="cp-tp-visual">
+              <div class="cp-tp-pills">
+                <span class="cp-logo-pill"><i class="bi bi-google" style="color:#4285f4"></i> Google Ads</span>
+                <span class="cp-logo-pill"><i class="bi bi-meta" style="color:#0866ff"></i> Meta Ads</span>
+                <span class="cp-logo-pill"><i class="bi bi-bag-fill" style="color:#95bf47"></i> Shopify</span>
+              </div>
+              <div class="cp-tp-arrow"><i class="bi bi-arrow-down"></i></div>
+              <div class="cp-tp-onenum"><span>Unified profit</span><b class="mono">€18,240</b></div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:3">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-exclamation-octagon"></i></div>
-            <h3>Money-leak detection</h3>
-            <p>Exactly where you're losing money — each with the € at risk per week and a fix.</p>
+          <!-- 1 Real profit -->
+          <div class="cp-tabpanel" data-tab="1">
+            <div class="cp-tp-text">
+              <h3>Real profit, not vanity ROAS</h3>
+              <p>Copilot uses <b>POAS — Profit on Ad Spend</b>: revenue minus real product cost. You optimize for money in the bank, not an inflated ROAS that pays nothing.</p>
+            </div>
+            <div class="cp-tp-visual">
+              <div class="cp-tp-vs">
+                <div class="cp-tp-vscol vanity"><span>ROAS</span><b class="mono">4.1×</b><small>looks great</small></div>
+                <div class="cp-tp-vsx">vs</div>
+                <div class="cp-tp-vscol truth"><span>POAS</span><b class="mono">1.9×</b><small>the truth</small></div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:1">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-graph-up-arrow"></i></div>
-            <h3>Growth opportunities</h3>
-            <p>Where to scale next, with the upside quantified — pour budget into what's actually profitable.</p>
+          <!-- 2 Leaks & growth -->
+          <div class="cp-tabpanel" data-tab="2">
+            <div class="cp-tp-text">
+              <h3>Plug leaks, scale winners</h3>
+              <p>Money-leak detection surfaces overspending campaigns, disapproved products and tracking breaks — each with the € at risk and a fix. Growth opportunities show where to scale, with the upside quantified.</p>
+            </div>
+            <div class="cp-tp-visual">
+              <div class="cp-money leak cp-tp-mini"><div class="m-tag"><i class="bi bi-exclamation-triangle-fill"></i> Leak</div><div class="m-amt">€430<small>/wk at risk</small></div></div>
+              <div class="cp-money gain cp-tp-mini"><div class="m-tag"><i class="bi bi-graph-up-arrow"></i> Opportunity</div><div class="m-amt">+€1,200<small>/mo upside</small></div></div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:2">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-file-earmark-text"></i></div>
-            <h3>AI Executive Reports</h3>
-            <p>A weekly, board-ready summary in plain language: profit, what changed, the top thing to do.</p>
+          <!-- 3 Reports -->
+          <div class="cp-tabpanel" data-tab="3">
+            <div class="cp-tp-text">
+              <h3>Reports &amp; Product Intelligence</h3>
+              <p>A weekly, board-ready <b>AI Executive Report</b> in plain language — profit, what changed, the top thing to do. Plus per-product POAS: best-sellers, movers, and which products lose money on ads.</p>
+            </div>
+            <div class="cp-tp-visual">
+              <div class="cp-tp-report">
+                <div class="cp-report-head"><i class="bi bi-stars"></i> Weekly Executive Report</div>
+                <p class="cp-report-body">Profit <b>+12.4%</b> to <b>€18,240</b>. Top action: cap "Summer Sale" budget.</p>
+                <div class="cp-tp-prodrow"><span>Best-seller · Linen Shirt</span><b class="mono good">2.8× POAS</b></div>
+                <div class="cp-tp-prodrow"><span>Losing money · Wool Coat</span><b class="mono bad">0.7× POAS</b></div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:3">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-box-seam"></i></div>
-            <h3>Product Intelligence</h3>
-            <p>Best-sellers, movers and per-product POAS — know which products to push and which lose money on ads.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:1">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-bell"></i></div>
-            <h3>Early-warning alerts</h3>
-            <p>PPC-grade alerts that don't cry wolf — a ROAS drop, a spend spike, a tracking break, the moment it matters.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:2">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-arrow-repeat"></i></div>
-            <h3>Decisions that compound</h3>
-            <p>Track every change and whether it worked. Copilot learns your winning plays and shows its prediction accuracy.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 reveal" style="--d:3">
-          <div class="cp-feat">
-            <div class="cp-feat-ic"><i class="bi bi-stars"></i></div>
-            <h3>Creative &amp; TikTok</h3>
-            <p>Creative Intelligence and TikTok insights as you grow.</p>
-            <span class="tier">Scale &amp; Pro tiers</span>
+          <!-- 4 Stay ahead -->
+          <div class="cp-tabpanel" data-tab="4">
+            <div class="cp-tp-text">
+              <h3>Stay ahead &amp; compound</h3>
+              <p>PPC-grade <b>early-warning alerts</b> that don't cry wolf — a ROAS drop, a spend spike, a tracking break, the moment it matters. Every decision is tracked and reviewed, so Copilot learns your winning plays.</p>
+              <span class="tier">Creative Intelligence &amp; TikTok on Scale &amp; Pro</span>
+            </div>
+            <div class="cp-tp-visual">
+              <div class="cp-tp-alert"><i class="bi bi-bell-fill"></i> ROAS dropped 18% on Google Search <b>2h ago</b></div>
+              <div class="cp-tp-alert ok"><i class="bi bi-check-circle-fill"></i> Last action worked <b>+€380/wk</b></div>
+              <div class="cp-tp-accuracy"><span>Prediction accuracy</span><b class="mono">87%</b></div>
+            </div>
           </div>
         </div>
       </div>
@@ -496,7 +581,7 @@
             <div class="p-name">Founding</div>
             <div class="p-price">€99<small>/mo</small></div>
             <p class="p-for">First 100 customers · price locked for life.</p>
-            <a class="btn btn-primary" href="https://copilot.loveads.ro">Start free</a>
+            <a class="btn btn-primary" href="https://copilot.loveads.ro/signup">Start free</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-3 reveal" style="--d:2">
@@ -504,7 +589,7 @@
             <div class="p-name">Growth</div>
             <div class="p-price">€199<small>/mo</small></div>
             <p class="p-for">€5k–25k monthly ad spend · adds Meta, Search &amp; Product Intelligence.</p>
-            <a class="btn btn-ghost" href="https://copilot.loveads.ro">Start free</a>
+            <a class="btn btn-ghost" href="https://copilot.loveads.ro/signup">Start free</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-3 reveal" style="--d:3">
@@ -512,7 +597,7 @@
             <div class="p-name">Scale</div>
             <div class="p-price">€399<small>/mo</small></div>
             <p class="p-for">€25k–100k spend · adds TikTok, Creative Intelligence, Advanced AAR.</p>
-            <a class="btn btn-ghost" href="https://copilot.loveads.ro">Start free</a>
+            <a class="btn btn-ghost" href="https://copilot.loveads.ro/signup">Start free</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-3 reveal" style="--d:4">
@@ -520,7 +605,7 @@
             <div class="p-name">Pro</div>
             <div class="p-price">€799<small>/mo</small></div>
             <p class="p-for">€100k–500k spend · multi-brand, multi-store, forecasting, priority support.</p>
-            <a class="btn btn-ghost" href="https://copilot.loveads.ro">Start free</a>
+            <a class="btn btn-ghost" href="https://copilot.loveads.ro/signup">Start free</a>
           </div>
         </div>
       </div>
@@ -575,10 +660,18 @@
       <div class="cp-cta reveal" style="--d:1">
         <h2>See your real profit today</h2>
         <p>Connect Google, Meta and Shopify in one click — and finally know what to do next.</p>
-        <a class="btn btn-primary btn-lg" href="https://copilot.loveads.ro">Start free <i class="bi bi-arrow-right"></i></a>
+        <a class="btn btn-primary btn-lg" href="https://copilot.loveads.ro/signup">Start free <i class="bi bi-arrow-right"></i></a>
       </div>
     </div>
   </section>
+
+  <!-- ============================ STICKY CTA ============================ -->
+  <div class="cp-sticky" id="stickyCta">
+    <div class="container cp-sticky-inner">
+      <span class="cp-sticky-txt"><b>See your real profit.</b> Connect Google, Meta &amp; Shopify in one click.</span>
+      <a class="btn btn-primary" href="https://copilot.loveads.ro/signup">Start free <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
 
   <!-- ============================ FOOTER ============================ -->
   <footer class="cp-footer">
@@ -624,6 +717,118 @@
       document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
     } else {
       document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+
+    // ---- Animated count-up ----
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function fmtNum(v, dec) {
+      return dec > 0 ? v.toFixed(dec) : Math.round(v).toLocaleString('en-US');
+    }
+    function animateCount(el) {
+      if (el.dataset.done) return; el.dataset.done = '1';
+      var target = parseFloat(el.dataset.count), dec = parseInt(el.dataset.decimals || '0', 10);
+      var prefix = el.dataset.prefix || '', suffix = el.dataset.suffix || '';
+      if (reduceMotion) { el.textContent = prefix + fmtNum(target, dec) + suffix; return; }
+      var dur = 1100, start = performance.now();
+      (function tick(now) {
+        var t = Math.min(1, (now - start) / dur);
+        var e = 1 - Math.pow(1 - t, 3);
+        el.textContent = prefix + fmtNum(target * e, dec) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      })(start);
+    }
+    if ('IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { if (en.isIntersecting) { animateCount(en.target); cio.unobserve(en.target); } });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('[data-count]').forEach(function (el) { cio.observe(el); });
+    } else {
+      document.querySelectorAll('[data-count]').forEach(animateCount);
+    }
+
+    // ---- Hero mock: tabbed mini-tour ----
+    var heroMock = document.getElementById('heroMock');
+    if (heroMock) {
+      var hTabs = heroMock.querySelectorAll('.cp-tab');
+      var hViews = heroMock.querySelectorAll('.cp-view');
+      var order = ['overview', 'leak', 'report'], hIdx = 0, hTimer = null;
+      function showView(name) {
+        hIdx = order.indexOf(name);
+        hTabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.view === name); });
+        hViews.forEach(function (v) {
+          var on = v.dataset.view === name;
+          v.classList.toggle('is-active', on);
+          if (on) v.querySelectorAll('[data-count]').forEach(animateCount);
+        });
+      }
+      function nextView() { showView(order[(hIdx + 1) % order.length]); }
+      function startCycle() { stopCycle(); if (!reduceMotion) hTimer = setInterval(nextView, 4200); }
+      function stopCycle() { if (hTimer) { clearInterval(hTimer); hTimer = null; } }
+      hTabs.forEach(function (t) { t.addEventListener('click', function () { showView(t.dataset.view); startCycle(); }); });
+      heroMock.addEventListener('mouseenter', stopCycle);
+      heroMock.addEventListener('mouseleave', startCycle);
+      startCycle();
+    }
+
+    // ---- Feature tabs ----
+    var featTabs = document.getElementById('featTabs');
+    if (featTabs) {
+      var fBtns = featTabs.querySelectorAll('.cp-ftab');
+      var fPanels = featTabs.querySelectorAll('.cp-tabpanel');
+      fBtns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          fBtns.forEach(function (x) { x.classList.remove('is-active'); });
+          fPanels.forEach(function (x) { x.classList.remove('is-active'); });
+          b.classList.add('is-active');
+          var p = featTabs.querySelector('.cp-tabpanel[data-tab="' + b.dataset.tab + '"]');
+          if (p) p.classList.add('is-active');
+        });
+      });
+    }
+
+    // ---- POAS calculator ----
+    var calc = document.getElementById('poasCalc');
+    if (calc) {
+      var rev = document.getElementById('ccRev'), spend = document.getElementById('ccSpend'), cogs = document.getElementById('ccCogs');
+      var eur = function (n) { return '€' + Math.round(n).toLocaleString('en-US'); };
+      function updateCalc() {
+        var R = +rev.value, S = +spend.value, C = +cogs.value / 100;
+        var cogsVal = R * C;
+        var roas = S > 0 ? R / S : 0;
+        var poas = S > 0 ? (R - cogsVal) / S : 0;
+        var profit = R - cogsVal - S;
+        document.getElementById('ccRevOut').textContent = eur(R);
+        document.getElementById('ccSpendOut').textContent = eur(S);
+        document.getElementById('ccCogsOut').textContent = cogs.value + '% of revenue';
+        document.getElementById('ccRoas').textContent = roas.toFixed(1) + '×';
+        document.getElementById('ccPoas').textContent = poas.toFixed(1) + '×';
+        document.getElementById('ccProfit').textContent = (profit < 0 ? '−' : '') + eur(Math.abs(profit));
+        var box = document.getElementById('ccProfitBox'), note = document.getElementById('ccNote');
+        if (profit < 0) {
+          box.classList.add('neg');
+          note.textContent = "You're losing money on ads — POAS is below 1×. This is exactly what Copilot catches.";
+        } else {
+          box.classList.remove('neg');
+          note.textContent = 'You keep €' + (profit / R).toFixed(2) + ' of every €1 of revenue after product cost and ad spend.';
+        }
+        [rev, spend, cogs].forEach(function (i) {
+          var pct = (i.value - i.min) / (i.max - i.min) * 100;
+          i.style.background = 'linear-gradient(90deg, var(--cp-accent) ' + pct + '%, var(--cp-border) ' + pct + '%)';
+        });
+      }
+      [rev, spend, cogs].forEach(function (i) { i.addEventListener('input', updateCalc); });
+      updateCalc();
+    }
+
+    // ---- Sticky CTA ----
+    var sticky = document.getElementById('stickyCta');
+    var cpFooter = document.querySelector('.cp-footer');
+    if (sticky) {
+      window.addEventListener('scroll', function () {
+        var show = window.scrollY > 700;
+        if (cpFooter && cpFooter.getBoundingClientRect().top < window.innerHeight) show = false;
+        sticky.classList.toggle('show', show);
+      }, { passive: true });
     }
   </script>
 </body>
