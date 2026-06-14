@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/loveads18/public_html/
-    - rsync -av --exclude='.git' --exclude='.cpanel.yml' --exclude='config.php' --delete . $DEPLOYPATH
+    - rsync -av --exclude='.git' --exclude='.cpanel.yml' --exclude='config.php' --exclude='docs' --exclude='NOTES.md' --delete . $DEPLOYPATH
