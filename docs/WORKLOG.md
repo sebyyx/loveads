@@ -1,6 +1,6 @@
 # loveads.ro — Work Log & Project Reference
 
-_Last updated: 2026-06-14_
+_Last updated: 2026-06-15_
 
 This document captures everything built on **loveads.ro** in this work cycle, plus the
 non-obvious operational details (deployment, verification, gotchas) needed to continue safely.
@@ -11,9 +11,14 @@ non-obvious operational details (deployment, verification, gotchas) needed to co
 
 - **loveads.ro** — static site (HTML/CSS/JS + one PHP form handler) for **Love Ads Marketing SRL**.
   - `index.html` — homepage: product-strategy consulting + a **LoveAds Copilot** showcase section.
+    **Redesigned 2026-06-15** by the design/UX team — new system on `site.css` (Geist, light, crimson),
+    **no Bootstrap**. Contact form re-wired to `contact.php`; GTM + full SEO/JSON-LD preserved.
   - `copilot/index.html` — dedicated **LoveAds Copilot** landing page (the SaaS product).
-  - `privacy-policy.html`, `terms.html` — legal pages.
+  - `privacy-policy.html`, `terms.html` — legal pages. **Restyled 2026-06-15** onto `site.css` to match
+    the new homepage (were Bootstrap/`main.css`).
   - `contact.php` — contact form handler (emails `sebastian.cosmor@loveads.ro`).
+  - `site.css` + root assets (`loveads-wordmark.png`, `logo-*`, `favicon-32.png`, `apple-touch-180.png`)
+    — the new design system. `includes/css/page/main.css` is now **legacy** (no live page references it).
 - **copilot.loveads.ro** — the live Copilot app (separate; we only link to it).
 - Company: Love Ads Marketing SRL · CUI RO39641531 · J40/10343/2018 · Voluntari, Ilfov, RO.
 
@@ -30,7 +35,8 @@ non-obvious operational details (deployment, verification, gotchas) needed to co
   - Legacy **untracked** files exist locally and are intentionally NOT committed (old 2018–2019 assets:
     `includes/fonts/`, `includes/plugin/`, `includes/js/`, `includes/css/common/`, `includes/css/plugin/`,
     `includes/css/page/default.css`, `hai-sa-ne-cunoastem.php`, `loveads.jpg`, `NOTES.md`). The live site
-    does not depend on them (it uses `includes/css/page/main.css` + CDN Bootstrap/Icons + Google Fonts).
+    does not depend on them (homepage + legal use `site.css` + Geist; `/copilot` uses `copilot.css` +
+    CDN Bootstrap/Icons + Geist).
 - `.htaccess` forces HTTPS and pins PHP 8.3. `NOTES.md` is gitignored (local scratch).
 
 ---
@@ -62,8 +68,10 @@ Generated from `~/Downloads/loveads_logo.pdf` (2 pages) and `~/Downloads/app-ico
 - `og-default.jpg` / `og-copilot.jpg` — 1200×630 Open Graph share images.
 - `site.webmanifest` — PWA manifest (theme `#d0224c`).
 
-Logo usage: white in homepage nav/footer (dark theme); charcoal + "Copilot" suffix in the Copilot
-landing nav (light theme); white on privacy/terms nav.
+Logo usage (after 2026-06-15 redesign): the **new homepage + legal pages** use `loveads-wordmark.png`
+(charcoal "Love" + crimson "Ads", for the light theme) in nav/footer. The Copilot landing nav uses the
+charcoal wordmark + "Copilot" suffix. The old white `loveads-logo.png` (for the old dark homepage) is no
+longer used on the homepage.
 
 ---
 
@@ -99,7 +107,11 @@ Decision loop → **Features (tabs)** → How it works → Audience → Pricing 
    - `profit = revenue − revenue×cost% − spend`
    - Defaults 41000 / 10000 / 54% → ROAS 4.1×, POAS 1.9×, profit €8,860. Profit box turns red if POAS < 1×.
 2. **Animated hero mock** (`#heroMock`) — 3 views (Overview / Money leak / AI report) auto-cycling every
-   4.2 s, pause on hover, clickable; KPIs count up.
+   4.2 s, pause on hover, clickable; KPIs count up. **Fixed 2026-06-14:** the 3 views had different
+   heights (602/346/316 px) and on mobile never paused (no `mouseenter`), so the card — and the whole
+   page below — jumped ~286 px every cycle. Now the views are grid-stacked in one cell
+   (`.cp-mock-body{display:grid}` + `.cp-view{grid-area:1/1}`, toggled via opacity), so the height is
+   stable. **Note: `/copilot` reveal is not `.js`-gated — see §10.**
 3. **Feature tabs** (`#featTabs`) — 5 themed tabs (Unify / Real profit / Leaks & growth / Reports /
    Stay ahead), each with its own visual panel (replaced the old 9-card grid).
 4. **Sticky CTA** (`#stickyCta`) — "Start free" bar appears after 700 px scroll, hides over the footer.
@@ -122,24 +134,40 @@ Reported: horizontal scroll ("jiggle") + content shifted/clipped on phones. Root
 
 Verified at a **real 375 px** device-emulated viewport: `scrollWidth == clientWidth` on both pages.
 
+**2026-06-15 (new homepage):** horizontal drag returned on mobile. Root cause was the **sticky nav**:
+only `.nav-links` was hidden on mobile, but `.nav-cta` (Open App + Let's talk + hamburger, ~273 px)
+stayed, so brand + CTA exceeded ~375 px — and since the nav is `position:sticky`, the page dragged
+sideways at any scroll position (it was noticed "in the portfolio area" but the cause was the nav).
+Fix: `@media(max-width:680px){.nav-cta .btn:not(.nav-toggle){display:none}}` + "Open App" added to the
+mobile menu, plus `overflow-x:clip` (NOT `hidden` — that breaks sticky) on body as a fallback, and
+`min-width:0` on form `.field` + stacking the portfolio `.work` items. **Lesson: first suspect for
+mobile horizontal drag = the sticky nav's buttons, not the section where you notice it.**
+
 ---
 
 ## 8. Design tokens
 
-- **Homepage (dark):** bg `#0f172a`/`#1e293b`, indigo accent `#6366f1`, Inter font. Copilot showcase
-  section reuses a crimson `#d0224c` product accent to stand apart.
+- **Homepage + legal (light, since 2026-06-15 redesign):** canvas `#f4f3f0`, ink `#19191b`, crimson
+  accent `#d0224c`, **Geist** + Geist Mono. Defined in `site.css` `:root`. (The old homepage was dark
+  `#0f172a` / indigo `#6366f1` / Inter on `main.css` — now replaced.)
 - **Copilot landing (light):** canvas `#fff`/`#f7f7f9`, crimson `#d0224c`, ink `#15151a`, Geist font.
+- The whole site now shares one crimson + Geist identity (homepage, copilot, legal).
 
 ---
 
 ## 9. Verification tooling (notes for next time)
 
-- **Chrome headless `--headless=new` floors the viewport at ~500 px wide.** A `--window-size=390` screenshot
-  renders at ~500 px and crops to 390 → content looks falsely shifted/clipped. Don't trust narrow screenshots.
-- For **true mobile** (375 px): use **CDP device emulation** via Node + Chrome `--remote-debugging-port`
-  (`Emulation.setDeviceMetricsOverride {width:375, deviceScaleFactor:2, mobile:true}`), then
-  `Page.captureScreenshot {captureBeyondViewport:true}`. Node 24 has global `fetch` + `WebSocket`.
-- Overflow check: compare `document.documentElement.scrollWidth` to `clientWidth`.
+- **Chrome `--headless=new` floors the viewport at ~500 px wide — even with CDP
+  `Emulation.setDeviceMetricsOverride {width:375}` AND `--window-size=375`** (`window.innerWidth`
+  reports ~451–500 regardless; old `--headless` floors too). So you **cannot** reproduce sub-500 px
+  horizontal overflow visually here. The mobile layout (`@media max-width:680px`) still activates at
+  ~500 px, so arrangement is verifiable.
+- **To find real <500 px overflow:** at emulated mobile 500, inject
+  `html,body{width:375px!important;max-width:375px!important;overflow-x:visible!important}`, then list
+  elements with `getBoundingClientRect().right > 376`. This is how the 2026-06-15 nav overflow was found.
+- Drive Chrome via CDP (Node 24 has global `fetch` + `WebSocket`); `Page.captureScreenshot
+  {captureBeyondViewport:true}`. Disable `scroll-behavior:smooth` before scripted `scrollTo` to far
+  targets or the screenshot fires mid-animation.
 - 100vh heroes fill the headless window — collapse `min-height` (or use full-page capture) to see lower
   sections; `.reveal`/`.fade-up` start at `opacity:0` so force them visible for static screenshots.
 - Local serve: `python3 -m http.server 8765` from repo root (root-relative `/includes/...` paths need it).
@@ -153,6 +181,12 @@ Verified at a **real 375 px** device-emulated viewport: `scrollWidth == clientWi
 - If advanced bots get past the form anti-spam → add **Cloudflare Turnstile** (free, no cookie banner).
 - Optional polish: tune hero cycle speed, calculator defaults, tab order.
 - Consider committing the legacy untracked assets or deleting them (currently neither tracked nor deployed).
+  Also `includes/css/page/main.css` is now legacy (old homepage), no live page references it.
+- **`/copilot` reveal is not `.js`-gated** (`.cp .reveal{opacity:0}`) — content below the hero depends on
+  JS with no no-JS fallback. The new homepage solved this with a `.js` gate; consider porting it to copilot.
+- Resolved this cycle: homepage no-JS fallback (new `.js .reveal` design); Copilot hero mock height jump
+  (the 3 auto-cycling views had different heights → ~286 px page jump every 4.2 s; now grid-stacked to a
+  stable height); homepage accent unified to crimson; mobile horizontal overflow (sticky nav).
 
 ---
 
@@ -164,3 +198,10 @@ Verified at a **real 375 px** device-emulated viewport: `scrollWidth == clientWi
 - `Fix mobile horizontal overflow and layout`
 - `Make Copilot landing interactive and engaging`
 - `Relabel calculator input to "Monthly revenue"`
+- `Add project work log; exclude docs/ and NOTES.md from deploy`
+- `Switch homepage action color to LoveAds Copilot crimson`
+- `Fix mobile scroll jump on /copilot hero mock`
+- `Replace homepage with new design-team redesign`
+- `Fix mobile horizontal overflow and portfolio layout on homepage`
+- `Fix mobile horizontal overflow: hide nav CTA buttons on phones`
+- `Restyle legal pages to match new homepage design`
