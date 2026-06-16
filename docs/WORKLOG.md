@@ -1,6 +1,6 @@
 # loveads.ro — Work Log & Project Reference
 
-_Last updated: 2026-06-15_
+_Last updated: 2026-06-16_
 
 This document captures everything built on **loveads.ro** in this work cycle, plus the
 non-obvious operational details (deployment, verification, gotchas) needed to continue safely.
@@ -152,6 +152,11 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
   `#0f172a` / indigo `#6366f1` / Inter on `main.css` — now replaced.)
 - **Copilot landing (light):** canvas `#fff`/`#f7f7f9`, crimson `#d0224c`, ink `#15151a`, Geist font.
 - The whole site now shares one crimson + Geist identity (homepage, copilot, legal).
+- **About-section skill chips** (`.chip` in `site.css`, 2026-06-16): Geist **sans** (not mono),
+  `border-radius:9px` (not a 999px pill), a crimson `::before` dot (`var(--accent)`, 6px),
+  `var(--text)` label on `var(--surface)` with a `var(--line-2)` border. Labels were also shortened
+  (Product Discovery, Product Strategy, Roadmapping, Requirements & Specs, Technical Advisory, Team &
+  Vendor Selection, Stakeholder Alignment, Go-to-Market). Verified live on 390 px mobile, no overflow.
 
 ---
 
@@ -205,3 +210,6 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Fix mobile horizontal overflow and portfolio layout on homepage`
 - `Fix mobile horizontal overflow: hide nav CTA buttons on phones`
 - `Restyle legal pages to match new homepage design`
+- `Update docs and sitemap for the homepage redesign`
+- `Shorten About-section skill chips`
+- `Restyle About-section chips: sans font, 9px corners, crimson dot`
