@@ -112,7 +112,10 @@ Rule applied: **visible marketing copy is generic, concrete answers stay concret
   being added** — keeps the brand-name SEO/GEO signal without promising integrations that don't exist.
 - Pills (2 places: Unify section + Features tab 0) went 3 → 4: store icon `bi-bag-fill` in Shopify
   green `#95bf47` → `bi-shop` in neutral `var(--cp-muted)`; new GA pill `bi-bar-chart-line-fill` in
-  `#e8710a`. No CSS change needed — they wrap on their own.
+  `#e8710a`. They wrap on their own, so no layout CSS was needed — the one `copilot.css` change is
+  cosmetic: under 767 px `.cp-logo-arrow` gets `flex-basis:100%` + `rotate(90deg)` so it takes its own
+  line and points down at the Copilot pill instead of being orphaned beside the last source. Same
+  treatment `.cp-loop-arrow` already had.
 - Touched `copilot/index.html` (title, meta, OG, Twitter, JSON-LD, 13 copy spots), `index.html`
   (6 spots) and `llms.txt` (4). **`Shopify Plus` in the homepage portfolio card stays** — that's a real
   delivered project, not an integration claim.

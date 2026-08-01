@@ -264,6 +264,11 @@ body.cp {
 }
 .cp-logo-pill i { font-size: 18px; }
 .cp-logo-arrow { color: var(--cp-muted); font-size: 20px; }
+/* On phones the pills stack, so the arrow gets its own line and points down at Copilot
+   (same treatment as .cp-loop-arrow). */
+@media (max-width: 767px) {
+  .cp-logo-arrow { flex-basis: 100%; text-align: center; transform: rotate(90deg); margin: 2px 0; }
+}
 
 /* =================================================
    THREE QUESTIONS
