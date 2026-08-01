@@ -2,7 +2,8 @@
 
 > Love Ads Marketing SRL (loveads.ro) is a Romania-based company offering product
 > strategy consulting and LoveAds Copilot, a profit-analytics SaaS for e-commerce
-> advertisers. Copilot unifies Google Ads, Meta Ads and Shopify data to show real
+> advertisers. Copilot unifies Google Ads, Meta Ads, Google Analytics and ecommerce
+> platform data (Shopify, Magento, with more being added) to show real
 > profit (POAS), detect money leaks, and recommend prioritized actions in plain language.
 
 ## About the company
@@ -17,14 +18,16 @@
 
 - [Product strategy consulting](https://loveads.ro/): helping founders and product teams
   define what to build, plan how to build it, and align on a clear strategy before development.
-- [LoveAds Copilot](https://loveads.ro/copilot/): a profit copilot for Google Ads, Meta and
-  Shopify. The live app is at https://copilot.loveads.ro.
+- [LoveAds Copilot](https://loveads.ro/copilot/): a profit copilot for Google Ads, Meta,
+  Google Analytics and your ecommerce platform (Shopify, Magento, with more being added).
+  The live app is at https://copilot.loveads.ro.
 
 ## What LoveAds Copilot does
 
 LoveAds Copilot answers three questions and closes the loop on every decision:
 
-1. What happened — unified, de-duplicated profit across all channels (Google Ads, Meta, Shopify).
+1. What happened — unified, de-duplicated profit across all channels (Google Ads, Meta,
+   Google Analytics, ecommerce platform).
 2. Why — the reasons behind changes, including account change history.
 3. What to do next — prioritized actions with the euro impact, in plain English.
 4. Did it work — every action is tracked and reviewed, building a playbook of what works.
@@ -50,7 +53,7 @@ Self-serve sign-up with card payment (Stripe); 14-day trial.
 
 ## Who it's for
 
-- E-commerce brands and store owners running their own Google Ads, Meta and Shopify.
+- E-commerce brands and store owners running their own Google Ads, Meta and online store.
 - Marketing agencies managing multiple clients (portfolio view + per-client intelligence).
 
 ## Links

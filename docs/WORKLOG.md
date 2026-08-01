@@ -1,6 +1,6 @@
 # loveads.ro — Work Log & Project Reference
 
-_Last updated: 2026-06-16_
+_Last updated: 2026-08-02_
 
 This document captures everything built on **loveads.ro** in this work cycle, plus the
 non-obvious operational details (deployment, verification, gotchas) needed to continue safely.
@@ -99,6 +99,27 @@ mirrors the app for a continuous site→app transition. Styles in `includes/css/
 Section order: Hero → Unify logos → 3 questions → POAS → **POAS calculator** → Leaks & opportunities →
 Decision loop → **Features (tabs)** → How it works → Audience → Pricing (4 cards, Founding highlighted)
 → FAQ → Trust + final CTA → **sticky CTA** → footer.
+
+### Platform-agnostic wording + Google Analytics (2026-08-02)
+
+Copilot will connect more than one store platform, so hard-coded **Shopify** copy was generalized and
+**Google Analytics** added as a fourth data source. Spec:
+`docs/superpowers/specs/2026-08-02-copilot-platform-agnostic-design.md`.
+
+Rule applied: **visible marketing copy is generic, concrete answers stay concrete.**
+- Sentences say "your store"; the integration pills say "Ecommerce Platform".
+- The "which channels do you support" FAQ and `llms.txt` still name **Shopify and Magento, with more
+  being added** — keeps the brand-name SEO/GEO signal without promising integrations that don't exist.
+- Pills (2 places: Unify section + Features tab 0) went 3 → 4: store icon `bi-bag-fill` in Shopify
+  green `#95bf47` → `bi-shop` in neutral `var(--cp-muted)`; new GA pill `bi-bar-chart-line-fill` in
+  `#e8710a`. No CSS change needed — they wrap on their own.
+- Touched `copilot/index.html` (title, meta, OG, Twitter, JSON-LD, 13 copy spots), `index.html`
+  (6 spots) and `llms.txt` (4). **`Shopify Plus` in the homepage portfolio card stays** — that's a real
+  delivered project, not an integration claim.
+
+**Gotcha for next time:** the JSON-LD `FAQPage` answers must stay character-identical to the visible
+FAQ paragraphs or Google flags the markup. Verified by parsing the JSON-LD and asserting each
+`acceptedAnswer.text` appears verbatim in the stripped page text (all 6 matched).
 
 ### Interactive / dynamic elements (vanilla JS, no deps; all respect `prefers-reduced-motion`)
 1. **POAS calculator** (`#poasCalc`) — sliders: monthly revenue, ad spend, product cost %.
@@ -213,3 +234,4 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Update docs and sitemap for the homepage redesign`
 - `Shorten About-section skill chips`
 - `Restyle About-section chips: sans font, 9px corners, crimson dot`
+- `Generalize Shopify wording and add Google Analytics as a data source`
