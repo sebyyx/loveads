@@ -110,6 +110,63 @@ body.cp {
   margin-bottom: 18px;
 }
 
+/* Hero announcement pill — a crimson highlight sweeps around the border.
+   The rotating conic-gradient sits behind an inset fill, leaving a 1px ring lit.
+   z-index:0 on the pill keeps both pseudo-elements inside its own stacking context. */
+.cp-beta {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 8px 18px;
+  margin-bottom: 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--cp-muted);
+  white-space: nowrap;
+}
+.cp-beta::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: 50%; top: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+  background: conic-gradient(
+    rgba(208,34,76,0.15) 0deg 250deg,
+    var(--cp-accent) 300deg,
+    rgba(208,34,76,0.15) 350deg 360deg
+  );
+  animation: cp-beta-sweep 5s linear infinite;
+}
+.cp-beta::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 1px;
+  border-radius: inherit;
+  background: #fff;
+}
+.cp-beta b { color: var(--cp-ink); font-weight: 700; }
+.cp-beta .cp-beta-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  flex: none;
+}
+@keyframes cp-beta-sweep { to { transform: translate(-50%, -50%) rotate(360deg); } }
+/* Without the sweep the pill keeps a plain soft-crimson ring. */
+@media (prefers-reduced-motion: reduce) {
+  .cp-beta::before { animation: none; background: rgba(208,34,76,0.22); }
+}
+@media (max-width: 420px) {
+  .cp-beta { font-size: 12.5px; padding: 7px 14px; }
+}
+
 .cp .section { padding: 96px 0; }
 .cp .section-soft { background: var(--cp-bg-soft); }
 .cp .section-head { max-width: 720px; margin: 0 auto 56px; text-align: center; }

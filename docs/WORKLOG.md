@@ -124,6 +124,20 @@ Rule applied: **visible marketing copy is generic, concrete answers stay concret
 FAQ paragraphs or Google flags the markup. Verified by parsing the JSON-LD and asserting each
 `acceptedAnswer.text` appears verbatim in the stripped page text (all 6 matched).
 
+### Hero BETA pill (2026-08-02)
+
+The hero's `<span class="eyebrow">Profit copilot</span>` was replaced by `.cp-beta` —
+"● LoveAds Copilot — **Now in BETA**". The old eyebrow just restated the H1 sitting right under it;
+the beta status is actual news. Static (not a link) so it doesn't compete with the "Open Copilot"
+CTA a few centimetres below. `/copilot` hero only — on the homepage the Copilot block is a showcase,
+and a BETA badge there would fight the consulting message.
+
+Modelled on the announcement pill at oxygenbuilder.com. The premium detail is the highlight sweeping
+around the border: a conic-gradient `::before` rotating every 5 s, with an `inset:1px` `::after` fill
+over it so only a 1 px ring stays lit. `z-index:0` on the pill keeps both negative-z pseudo-elements
+inside its own stacking context — without it they would paint behind the section background.
+Under `prefers-reduced-motion` the sweep is replaced by a plain soft-crimson ring.
+
 ### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger
 
 Spec: `docs/superpowers/specs/2026-08-02-copilot-poas-scroll-moment-design.md`.
@@ -276,3 +290,4 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Drop the source-to-Copilot arrow onto its own line on phones`
 - `Add spec for the POAS scroll moment on /copilot`
 - `Add the POAS scroll moment and gate /copilot reveals on .js`
+- `Replace the hero eyebrow with a BETA announcement pill`
