@@ -35,6 +35,9 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#d0224c">
 
+  <!-- Reveal animations are gated on this class, so the page stays readable without JS -->
+  <script>document.documentElement.classList.add('js');</script>
+
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -285,7 +288,7 @@
   </section>
 
   <!-- ============================ REAL PROFIT / POAS ============================ -->
-  <section class="section section-soft">
+  <section class="section section-soft" id="poasProof">
     <div class="container">
       <div class="row align-items-center g-5">
         <div class="col-lg-6 reveal">
@@ -691,6 +694,10 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- GSAP + ScrollTrigger power the single scroll-driven moment (the POAS section).
+       Deferred and fully optional: if these fail to load the page behaves as it did before. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -820,6 +827,82 @@
       }
       [rev, spend, cogs].forEach(function (i) { i.addEventListener('input', updateCalc); });
       updateCalc();
+    }
+
+    // ---- POAS proof: the page's one scroll-driven moment ----
+    // The stat rows argue "ROAS 4.1x looks great -> minus real cost -> POAS 1.9x is the truth".
+    // Revealing them one at a time turns that claim into a demonstration.
+    //
+    // The hidden state is set from JS and never from CSS: if GSAP fails to load, if the CDN is
+    // blocked, or if motion is reduced, the rows stay exactly as visible as they are today.
+    function initPoasProof() {
+      var section = document.getElementById('poasProof');
+      if (!section || reduceMotion) return;
+      if (!window.gsap || !window.ScrollTrigger) return;
+
+      var rows = section.querySelectorAll('.cp-stat-row');
+      if (rows.length < 2) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.set(rows, { opacity: 0, y: 12 });
+
+      // Hand these numbers over to the timeline. Otherwise the page-wide count-up observer fires
+      // them on viewport entry — while the rows are still invisible — and the reveal lands on
+      // numbers that have already finished counting.
+      if (typeof cio !== 'undefined' && cio) {
+        section.querySelectorAll('[data-count]').forEach(function (el) { cio.unobserve(el); });
+      }
+
+      // animateCount() guards on dataset.done, so scrubbing back and forth cannot restart it.
+      function countRow(row) {
+        row.querySelectorAll('[data-count]').forEach(animateCount);
+      }
+
+      var desktop = window.matchMedia('(min-width: 900px)');
+
+      function build() {
+        var pin = desktop.matches;
+        var tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: pin ? 'top top' : 'top 75%',
+            end: pin ? '+=140%' : 'top 45%',
+            pin: pin,
+            scrub: pin ? 0.4 : false,
+            invalidateOnRefresh: true
+          }
+        });
+
+        rows.forEach(function (row, i) {
+          // The last two rows (real cost, then POAS) get more room — that is where the argument lands.
+          var hold = i >= rows.length - 2 ? 1.4 : 1;
+          tl.to(row, {
+            opacity: 1, y: 0, duration: hold, ease: 'power2.out',
+            onStart: function () { countRow(row); }
+          }, i === 0 ? 0 : '>-0.35');
+        });
+
+        return tl;
+      }
+
+      var tl = build();
+
+      // Rebuild when crossing the 900px boundary so the pin is added/removed cleanly.
+      var onChange = function () {
+        tl.scrollTrigger && tl.scrollTrigger.kill(true);
+        tl.kill();
+        gsap.set(rows, { opacity: 0, y: 12 });
+        tl = build();
+      };
+      desktop.addEventListener ? desktop.addEventListener('change', onChange)
+                               : desktop.addListener(onChange);
+    }
+
+    // Deferred scripts run before DOMContentLoaded, so GSAP is present by the time this fires.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPoasProof);
+    } else {
+      initPoasProof();
     }
 
     // ---- Sticky CTA ----

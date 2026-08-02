@@ -124,6 +124,39 @@ Rule applied: **visible marketing copy is generic, concrete answers stay concret
 FAQ paragraphs or Google flags the markup. Verified by parsing the JSON-LD and asserting each
 `acceptedAnswer.text` appears verbatim in the stripped page text (all 6 matched).
 
+### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger
+
+Spec: `docs/superpowers/specs/2026-08-02-copilot-poas-scroll-moment-design.md`.
+
+**Why only one.** All 15 sections used the same `.reveal` fade-up, so nothing read as important.
+The fix was not more motion — it was one section that earns it, with the rest kept quiet. The POAS
+section carries the product's central argument (ROAS flatters, POAS tells the truth), so sequencing
+its five stat rows turns a claim into a demonstration.
+
+**How it works** (`#poasProof`, GSAP 3.13 + ScrollTrigger from jsDelivr, `defer`, ≈36 KB gz):
+- Desktop ≥900 px: section pins for `+=140%`, `scrub: 0.4`; rows animate in order, the last two
+  (real cost, then POAS) get 1.4× the scroll distance because that's where the argument lands.
+- Mobile <900 px: **no pin** — pinning on phones reads as scroll hijack. Same timeline, fired once
+  on entry with a fixed duration. A `matchMedia('(min-width:900px)')` change listener rebuilds the
+  timeline when the boundary is crossed.
+- Count-up reuses the existing `animateCount()` (idempotent via `dataset.done`), called per row from
+  the timeline. **The POAS rows are `cio.unobserve()`d** — otherwise the page-wide count-up observer
+  fires them on viewport entry, while the rows are still invisible, and the reveal lands on numbers
+  that already finished counting.
+
+**The rule that makes this safe: the hidden state is set from JS, never from CSS.** `gsap.set(rows,
+{opacity:0})` runs at init, behind a `window.gsap && window.ScrollTrigger` guard and a
+`prefers-reduced-motion` check. If the CDN is blocked or GSAP fails, the rows are simply visible —
+there is no code path that yields an empty section. Verified with GSAP blocked at the network layer.
+
+**Also fixed here:** the missing `.js` gate (old §10 follow-up). `.cp .reveal{opacity:0}` was
+unconditional, so with JS off everything below the hero was invisible — unacceptable once the page
+depends on an external animation library. Now `.js .cp .reveal` + an inline `<script>` in `<head>`,
+matching `site.css`.
+
+**Gotcha:** GSAP's pin inserts a `pin-spacer` and the nav is `position: sticky` — the classic place
+this breaks. Verified the nav stays at `top: 0` throughout the pin.
+
 ### Interactive / dynamic elements (vanilla JS, no deps; all respect `prefers-reduced-motion`)
 1. **POAS calculator** (`#poasCalc`) — sliders: monthly revenue, ad spend, product cost %.
    - `ROAS = revenue / spend`
@@ -135,7 +168,7 @@ FAQ paragraphs or Google flags the markup. Verified by parsing the JSON-LD and a
    heights (602/346/316 px) and on mobile never paused (no `mouseenter`), so the card — and the whole
    page below — jumped ~286 px every cycle. Now the views are grid-stacked in one cell
    (`.cp-mock-body{display:grid}` + `.cp-view{grid-area:1/1}`, toggled via opacity), so the height is
-   stable. **Note: `/copilot` reveal is not `.js`-gated — see §10.**
+   stable.
 3. **Feature tabs** (`#featTabs`) — 5 themed tabs (Unify / Real profit / Leaks & growth / Reports /
    Stay ahead), each with its own visual panel (replaced the old 9-card grid).
 4. **Sticky CTA** (`#stickyCta`) — "Start free" bar appears after 700 px scroll, hides over the footer.
@@ -211,8 +244,10 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - Optional polish: tune hero cycle speed, calculator defaults, tab order.
 - Consider committing the legacy untracked assets or deleting them (currently neither tracked nor deployed).
   Also `includes/css/page/main.css` is now legacy (old homepage), no live page references it.
-- **`/copilot` reveal is not `.js`-gated** (`.cp .reveal{opacity:0}`) — content below the hero depends on
-  JS with no no-JS fallback. The new homepage solved this with a `.js` gate; consider porting it to copilot.
+- Second scroll moment candidate: the **Decision Loop** (Detect → Recommend → Act → Review → Learn).
+  Deliberately deferred — two pinned moments on one page dilute each other. Revisit only if the POAS
+  moment proves itself.
+- Resolved 2026-08-02: **`/copilot` reveal is now `.js`-gated** (was the long-standing no-JS gap).
 - Resolved this cycle: homepage no-JS fallback (new `.js .reveal` design); Copilot hero mock height jump
   (the 3 auto-cycling views had different heights → ~286 px page jump every 4.2 s; now grid-stacked to a
   stable height); homepage accent unified to crimson; mobile horizontal overflow (sticky nav).
@@ -238,3 +273,6 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Shorten About-section skill chips`
 - `Restyle About-section chips: sans font, 9px corners, crimson dot`
 - `Generalize Shopify wording and add Google Analytics as a data source`
+- `Drop the source-to-Copilot arrow onto its own line on phones`
+- `Add spec for the POAS scroll moment on /copilot`
+- `Add the POAS scroll moment and gate /copilot reveals on .js`
