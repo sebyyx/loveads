@@ -2,6 +2,9 @@
 
 _Last updated: 2026-08-02_
 
+A dated summary of what shipped lives in `CHANGELOG.md`; this document captures the
+non-obvious detail behind it.
+
 This document captures everything built on **loveads.ro** in this work cycle, plus the
 non-obvious operational details (deployment, verification, gotchas) needed to continue safely.
 
@@ -32,7 +35,15 @@ non-obvious operational details (deployment, verification, gotchas) needed to co
   (propagation is not instant; wait a minute or two before verifying live).
 - `.cpanel.yml` runs: `rsync -av --delete . $DEPLOYPATH` (excludes `.git`, `.cpanel.yml`, `config.php`).
   - **`--delete` means anything not tracked in git is removed from `public_html` on deploy.**
-  - Legacy **untracked** files exist locally and are intentionally NOT committed (old 2018–2019 assets:
+  - **Repo cleanup 2026-08-02: 232 tracked files → 33.** Removed `includes/Swift/` (155 files, 792 KB —
+  Swift Mailer, dead: `contact.php` uses `mail()` directly and the library is unmaintained since 2021),
+  43 orphaned images (2.3 MB, assets of the 2018–2019 site) and `includes/css/page/main.css`. All were
+  being rsynced into `public_html` on every deploy. Recoverable from git history.
+  **To audit again:** list tracked images whose basename appears in none of the live pages/CSS, then
+  confirm the inverse — that every `src`/`href`/`url()` in the live pages still resolves — and load all
+  four pages with `Network.responseReceived` to catch 404s. Checking only one direction is how you
+  delete something that is still used.
+- Legacy **untracked** files exist locally and are intentionally NOT committed (old 2018–2019 assets:
     `includes/fonts/`, `includes/plugin/`, `includes/js/`, `includes/css/common/`, `includes/css/plugin/`,
     `includes/css/page/default.css`, `hai-sa-ne-cunoastem.php`, `loveads.jpg`, `NOTES.md`). The live site
     does not depend on them (homepage + legal use `site.css` + Geist; `/copilot` uses `copilot.css` +
@@ -256,8 +267,9 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
   biggest remaining conversion lift on the landing.
 - If advanced bots get past the form anti-spam → add **Cloudflare Turnstile** (free, no cookie banner).
 - Optional polish: tune hero cycle speed, calculator defaults, tab order.
-- Consider committing the legacy untracked assets or deleting them (currently neither tracked nor deployed).
-  Also `includes/css/page/main.css` is now legacy (old homepage), no live page references it.
+- **Closed 2026-08-02:** the repo cleanup below settled this. `main.css` and the orphaned assets were
+  removed from git; the untracked 2018–2019 files stay on the local machine (git never held them, so
+  deleting would be irreversible, and they never deploy).
 - Second scroll moment candidate: the **Decision Loop** (Detect → Recommend → Act → Review → Learn).
   Deliberately deferred — two pinned moments on one page dilute each other. Revisit only if the POAS
   moment proves itself.
@@ -291,3 +303,4 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Add spec for the POAS scroll moment on /copilot`
 - `Add the POAS scroll moment and gate /copilot reveals on .js`
 - `Replace the hero eyebrow with a BETA announcement pill`
+- `Remove dead code and orphaned assets from the repo`
