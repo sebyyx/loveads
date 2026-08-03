@@ -19,7 +19,7 @@
   --cp-border-strong:#d9d9e1;
   --cp-good:        #128a5a;
   --cp-warn:        #d0224c;
-  --cp-serif:       'Newsreader', Georgia, 'Times New Roman', serif;
+  --cp-display:     'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --cp-mono:        'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --cp-shadow:      0 1px 2px rgba(20,20,30,0.04), 0 8px 30px rgba(20,20,30,0.06);
   --cp-shadow-lg:   0 4px 12px rgba(20,20,30,0.06), 0 24px 60px rgba(20,20,30,0.10);
@@ -44,15 +44,16 @@ body.cp {
   overflow-x: hidden;
 }
 
-/* Display headings are the serif; h3-h5 stay sans UI headings. Splitting these stops
-   `.cp h1` (class+element) from out-specifying the display classes and forcing 700 —
-   which Newsreader cannot even render, since its variable range stops at 600. */
+/* h1/h2 are the display face; h3-h5 stay body-sans headings. These are split so that
+   `.cp h1` (class + element) cannot out-specify a display class and silently override
+   its weight or width — which is exactly what happened while a serif was in this slot. */
 .cp h1, .cp h2 {
   color: var(--cp-ink);
-  font-family: var(--cp-serif);
-  font-weight: 400;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-family: var(--cp-display);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 92;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
 }
 .cp h3, .cp h4, .cp h5 {
   color: var(--cp-ink);
@@ -183,12 +184,12 @@ body.cp {
 .cp .section-soft { background: var(--cp-bg-soft); }
 .cp .section-head { max-width: 720px; margin: 0 auto 56px; text-align: center; }
 .cp .section-title {
-  font-family: var(--cp-serif);
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 400;
-  font-variation-settings: 'opsz' 44;
-  letter-spacing: -0.015em;
-  line-height: 1.14;
+  font-family: var(--cp-display);
+  font-size: clamp(25px, 3.4vw, 38px);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 92;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
   margin-bottom: 16px;
 }
 .cp .section-sub {
@@ -258,12 +259,12 @@ body.cp {
 }
 .cp-hero .container { position: relative; z-index: 2; }
 .cp-hero-title {
-  font-family: var(--cp-serif);
-  font-size: clamp(36px, 6vw, 66px);
-  font-weight: 400;
-  font-variation-settings: 'opsz' 72;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-family: var(--cp-display);
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 92;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
   margin-bottom: 22px;
 }
 .cp-hero-title .hl { color: var(--cp-accent); }
