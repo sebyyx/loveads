@@ -18,3 +18,22 @@ error_log
 .idea/
 *.swp
 *.swo
+
+# AI tooling — never deploy.
+# Deploy is `rsync --delete` from the repo root into public_html, and it only excludes
+# .git, .cpanel.yml, config.php, docs and NOTES.md. Anything else committed at the root
+# ends up publicly served, so agent config and design-context files stay out of git.
+.claude/
+.cursor/
+.codex/
+.grok/
+.github/copilot-instructions.md
+# Anchored to the root: a copy under docs/ is never deployed, so that one stays
+# committable if you ever want the design context in version control.
+/PRODUCT.md
+/DESIGN.md
+
+# Node — this is a static site with no build step; any node_modules here comes from
+# a tool run via npx and has no business in public_html.
+node_modules/
+.npm/
