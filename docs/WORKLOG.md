@@ -176,6 +176,30 @@ Plex Mono** for figures and labels. Loaded as one Google Fonts request per page 
 each family renders by measuring it against its fallback. Checking only the computed style tells you
 what the CSS asked for, not what the browser drew.
 
+### Accessibility & SEO audit (2026-08-03)
+
+Lighthouse on live before the work: **Performance 76 · Accessibility 92 · Best Practices 100 ·
+SEO 100**, FCP 3.8s, LCP 4.3s, TBT 0ms, **CLS 0**.
+
+Fixed: contrast on `--text-3` (3.09:1 → ≥4.73 on all three grounds), `--on-ink-3` (3.52 → 4.80),
+`--cp-muted` (3.16 → 4.87) and `--cp-good` (4.08 → 5.01); a footer `h2→h5` jump and a `h2→h4` jump
+in the decision loop; a missing `<main>` landmark on all four pages; `role="tab"` on the eight tab
+buttons whose `role="tablist"` parent requires it; `aria-label` on the three calculator range inputs;
+and a brand `aria-label` that omitted the visible "Copilot". All four pages now score **100 on
+Accessibility, Best Practices and SEO**.
+
+**Two gotchas worth keeping:**
+
+- **CLS was already 0**, despite no image carrying `width`/`height`. The images sit in containers
+  with fixed CSS dimensions, so nothing shifted. The attributes were added anyway as protection
+  against slow connections and future layout changes — but do not assume missing dimensions means
+  measured layout shift. Measure first.
+- **Lighthouse contrast audits are unreliable on this page.** `/copilot` scored 96, 96, 100 across
+  three identical runs. The failures reported `#f8f8f8 on #ffffff` at 1.06:1 — a colour that is in
+  no palette. The elements were inside the hero mock, which cycles three views every 4.2s with an
+  opacity transition, so the audit was sampling mid-fade. Resting contrast measures 4.89–9.50:1.
+  Before chasing a contrast failure, check whether the element is inside something that animates.
+
 ### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger
 
 Spec: `docs/superpowers/specs/2026-08-02-copilot-poas-scroll-moment-design.md`.

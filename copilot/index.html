@@ -145,7 +145,7 @@
   <nav class="cp-nav" id="cpNav">
     <div class="container">
       <div class="nav-inner">
-        <a class="cp-brand" href="/" aria-label="LoveAds home">
+        <a class="cp-brand" href="/" aria-label="LoveAds Copilot — home">
           <img src="/includes/images/loveads-logo-dark.png" alt="LoveAds" class="cp-logo-img" width="139" height="30">
           <span class="cp-brand-suffix">Copilot</span>
         </a>
@@ -160,6 +160,8 @@
     </div>
   </nav>
 
+
+  <main id="content">
   <!-- ============================ HERO ============================ -->
   <header class="cp-hero">
     <div class="cp-hero-grid"></div>
@@ -183,9 +185,9 @@
               <span class="cp-mock-dots"><i></i><i></i><i></i></span>
             </div>
             <div class="cp-mock-tabs" role="tablist">
-              <button class="cp-tab is-active" type="button" data-view="overview">Overview</button>
-              <button class="cp-tab" type="button" data-view="leak">Money leak</button>
-              <button class="cp-tab" type="button" data-view="report">AI report</button>
+              <button class="cp-tab is-active" role="tab" type="button" data-view="overview">Overview</button>
+              <button class="cp-tab" role="tab" type="button" data-view="leak">Money leak</button>
+              <button class="cp-tab" role="tab" type="button" data-view="report">AI report</button>
             </div>
             <div class="cp-mock-body">
               <!-- Overview -->
@@ -337,15 +339,15 @@
         <div class="cp-calc-inputs">
           <div class="cp-calc-field">
             <label>Monthly revenue <output class="cc-out" id="ccRevOut">€41,000</output></label>
-            <input type="range" id="ccRev" min="5000" max="200000" step="1000" value="41000">
+            <input type="range" id="ccRev" aria-label="Monthly revenue" min="5000" max="200000" step="1000" value="41000">
           </div>
           <div class="cp-calc-field">
             <label>Monthly ad spend <output class="cc-out" id="ccSpendOut">€10,000</output></label>
-            <input type="range" id="ccSpend" min="1000" max="100000" step="500" value="10000">
+            <input type="range" id="ccSpend" aria-label="Monthly ad spend" min="1000" max="100000" step="500" value="10000">
           </div>
           <div class="cp-calc-field">
             <label>Product &amp; fulfilment cost <output class="cc-out" id="ccCogsOut">54% of revenue</output></label>
-            <input type="range" id="ccCogs" min="10" max="85" step="1" value="54">
+            <input type="range" id="ccCogs" aria-label="Product cost as a percentage of revenue" min="10" max="85" step="1" value="54">
           </div>
         </div>
         <div class="cp-calc-results">
@@ -408,15 +410,15 @@
         <p class="section-sub">Copilot tracks every change and whether it worked — building a playbook of what works for <i>your</i> business. Institutional memory plus an AI that grades its own past predictions.</p>
       </div>
       <div class="cp-loop reveal" style="--d:1">
-        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-radar"></i></div><h4>Detect</h4><p>Spot what changed and why</p></div>
+        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-radar"></i></div><h3 class="ls-h">Detect</h3><p>Spot what changed and why</p></div>
         <div class="cp-loop-arrow"><i class="bi bi-arrow-right"></i></div>
-        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-lightbulb"></i></div><h4>Recommend</h4><p>Prioritized actions with € impact</p></div>
+        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-lightbulb"></i></div><h3 class="ls-h">Recommend</h3><p>Prioritized actions with € impact</p></div>
         <div class="cp-loop-arrow"><i class="bi bi-arrow-right"></i></div>
-        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-check2-circle"></i></div><h4>Act</h4><p>Follow the plan</p></div>
+        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-check2-circle"></i></div><h3 class="ls-h">Act</h3><p>Follow the plan</p></div>
         <div class="cp-loop-arrow"><i class="bi bi-arrow-right"></i></div>
-        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-clipboard-data"></i></div><h4>Review</h4><p>Did it actually work?</p></div>
+        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-clipboard-data"></i></div><h3 class="ls-h">Review</h3><p>Did it actually work?</p></div>
         <div class="cp-loop-arrow"><i class="bi bi-arrow-right"></i></div>
-        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-mortarboard"></i></div><h4>Learn</h4><p>Your winning plays, remembered</p></div>
+        <div class="cp-loop-step"><div class="ls-ic"><i class="bi bi-mortarboard"></i></div><h3 class="ls-h">Learn</h3><p>Your winning plays, remembered</p></div>
       </div>
     </div>
   </section>
@@ -431,11 +433,11 @@
       </div>
       <div class="cp-tabs-wrap reveal" style="--d:1" id="featTabs">
         <div class="cp-tabbar" role="tablist">
-          <button class="cp-ftab is-active" type="button" data-tab="0"><i class="bi bi-diagram-3"></i> Unify</button>
-          <button class="cp-ftab" type="button" data-tab="1"><i class="bi bi-cash-stack"></i> Real profit</button>
-          <button class="cp-ftab" type="button" data-tab="2"><i class="bi bi-graph-up-arrow"></i> Leaks &amp; growth</button>
-          <button class="cp-ftab" type="button" data-tab="3"><i class="bi bi-file-earmark-text"></i> Reports</button>
-          <button class="cp-ftab" type="button" data-tab="4"><i class="bi bi-bell"></i> Stay ahead</button>
+          <button class="cp-ftab is-active" role="tab" type="button" data-tab="0"><i class="bi bi-diagram-3"></i> Unify</button>
+          <button class="cp-ftab" role="tab" type="button" data-tab="1"><i class="bi bi-cash-stack"></i> Real profit</button>
+          <button class="cp-ftab" role="tab" type="button" data-tab="2"><i class="bi bi-graph-up-arrow"></i> Leaks &amp; growth</button>
+          <button class="cp-ftab" role="tab" type="button" data-tab="3"><i class="bi bi-file-earmark-text"></i> Reports</button>
+          <button class="cp-ftab" role="tab" type="button" data-tab="4"><i class="bi bi-bell"></i> Stay ahead</button>
         </div>
 
         <div class="cp-tabpanels">
@@ -679,6 +681,8 @@
   </div>
 
   <!-- ============================ FOOTER ============================ -->
+  </main>
+
   <footer class="cp-footer">
     <div class="container">
       <div class="f-row">

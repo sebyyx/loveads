@@ -14,10 +14,10 @@
   --ink-line:#33333a;
   --text:#1a1a1c;
   --text-2:#55555a;
-  --text-3:#8a8a90;
+  --text-3:#68686f;   /* >=4.73:1 on all three grounds (surface, canvas, canvas-2) — was #8a8a90 at 3.09 */
   --on-ink:#f3f2ef;
   --on-ink-2:#a6a6ac;
-  --on-ink-3:#6f6f77;
+  --on-ink-3:#85858e; /* 4.80:1 on ink — was #6f6f77 at 3.52 */
   --line:#e5e3dd;
   --line-2:#d8d5cc;
   --accent:#d0224c;
@@ -234,7 +234,7 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.4fr;gap:40px;}
 .footer .brand .wm{font-size:18px;}
 .footer .desc{font-size:14px;color:var(--text-2);line-height:1.6;margin-top:16px;max-width:280px;}
-.footer h5{font-family:var(--mono);font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:16px;font-weight:500;}
+.footer h2{font-family:var(--mono);font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:16px;font-weight:500;}
 .footer ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
 .footer ul a{font-size:14.5px;color:var(--text-2);}
 .footer ul a:hover{color:var(--accent-text);}

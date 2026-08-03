@@ -14,10 +14,10 @@
   --cp-accent-soft: rgba(208, 34, 76, 0.08);
   --cp-ink:         #15151a;
   --cp-text:        #44454f;
-  --cp-muted:       #8a8b96;
+  --cp-muted:       #6b6c75;   /* 4.63:1 on #f7f7f9, 5.13:1 on white — was #8a8b96 at 3.16 */
   --cp-border:      #e8e8ee;
   --cp-border-strong:#d9d9e1;
-  --cp-good:        #128a5a;
+  --cp-good:        #0f7a50;   /* 5.01:1 on #f7f7f9 — was #128a5a at 4.08 */
   --cp-warn:        #d0224c;
   --cp-display:     'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --cp-mono:        'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -435,7 +435,7 @@ body.cp {
   padding: 22px 18px; text-align: center;
 }
 .cp-loop-step .ls-ic { font-size: 22px; color: var(--cp-accent); margin-bottom: 10px; }
-.cp-loop-step h4 { font-size: 15px; margin-bottom: 6px; }
+.cp-loop-step .ls-h { font-size: 15px; margin-bottom: 6px; }
 .cp-loop-step p { font-size: 12.5px; color: var(--cp-muted); margin: 0; }
 .cp-loop-arrow { display: flex; align-items: center; color: var(--cp-border-strong); font-size: 18px; }
 @media (max-width: 767px) { .cp-loop-arrow { transform: rotate(90deg); } }
