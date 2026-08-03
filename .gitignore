@@ -28,6 +28,7 @@ error_log
 .codex/
 .grok/
 .github/copilot-instructions.md
+.impeccable/
 # Anchored to the root: a copy under docs/ is never deployed, so that one stays
 # committable if you ever want the design context in version control.
 /PRODUCT.md
