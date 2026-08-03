@@ -5,6 +5,57 @@ each decision live in `WORKLOG.md`; this file is the index of *what changed, whe
 
 ---
 
+## 2026-08-03
+
+### The site is no longer set entirely in Geist
+
+Geist is Vercel's typeface and by now the default face of AI-generated landing pages. It read as
+competent and anonymous — the opposite of what a consultancy selling judgment should look like.
+
+The system is now three faces with three jobs, and no overlap:
+
+| Role | Face | Why |
+|---|---|---|
+| Display (h1, h2) | **Archivo 700, `wdth` 92** | Industrial grotesque. The 8% narrowing is what stops it reading as a generic bold sans. |
+| Body and UI | **Geist** | Unchanged, and deliberately unremarkable — the voice lives in the display face. |
+| Figures and labels | **IBM Plex Mono** | Institutional rather than code-editor; keeps numbers in a column. |
+
+### Three defects found while doing it
+
+- **A font weight that never existed.** Headings declared `font-weight: 560`, but the fonts were
+  requested as discrete instances (`300;400;450;500;600;700`), so 540, 560 and 580 all rendered as
+  600. Measured, not assumed: 732.94px for each of them against 709.27px at 500. Fonts are now
+  requested as variable ranges, so intermediate weights are real for the first time.
+- **`@import` was blocking rendering.** `site.css` loaded fonts with a CSS `@import`, which
+  serialises the fetch behind the stylesheet. `index.html`, `terms.html` and `privacy-policy.html`
+  now use `<link rel="preconnect">` + `<link>` in the head, as `/copilot` already did.
+- **A specificity conflict on `/copilot`.** `.cp h1` (class + element) out-specified
+  `.cp-hero-title` (class only) and forced a weight onto the display face. The heading block is
+  split: h1/h2 take the display face, h3–h5 stay body-sans.
+
+### Directions tried and rejected
+
+Recorded so nobody re-litigates them: **Newsreader** (a reading serif — rejected as "not high
+tech"), **Martian Mono** as a display face, **Bricolage Grotesque**, **Host Grotesk** (too close to
+Geist, so it did not solve the problem), and **Archivo Narrow** (18 KB and genuinely narrower, but
+rejected on looks). **DM Sans** was considered as a Geist replacement and rejected: it is also a
+saturated default, it is twice the weight, and body text should not have a personality that competes
+with the display face.
+
+### Impeccable installed as a Claude Code plugin
+
+`pbakaus/impeccable` added as a second marketplace and installed at user scope, alongside
+superpowers. Two artefacts were generated and live **locally only** — `PRODUCT.md` records durable
+product truth, `DESIGN.md` plus `.impeccable/design.json` record the visual system under the North
+Star **"The Instrument"**.
+
+Both are gitignored on purpose. Deploy is `rsync --delete` from the repo root, so anything committed
+there is publicly served. `.gitignore` now also covers `.claude/`, `.cursor/`, `.codex/`, `.grok/`,
+`.impeccable/` and `node_modules/`. `/PRODUCT.md` and `/DESIGN.md` are anchored to the root, so a
+copy under `docs/` stays committable if the design context is ever worth versioning.
+
+---
+
 ## 2026-08-02
 
 Four changes, all deployed and verified on the live site.

@@ -1,6 +1,6 @@
 # loveads.ro — Work Log & Project Reference
 
-_Last updated: 2026-08-02_
+_Last updated: 2026-08-03_
 
 A dated summary of what shipped lives in `CHANGELOG.md`; this document captures the
 non-obvious detail behind it.
@@ -148,6 +148,33 @@ around the border: a conic-gradient `::before` rotating every 5 s, with an `inse
 over it so only a 1 px ring stays lit. `z-index:0` on the pill keeps both negative-z pseudo-elements
 inside its own stacking context — without it they would paint behind the section background.
 Under `prefers-reduced-motion` the sweep is replaced by a plain soft-crimson ring.
+
+### Typography (2026-08-03)
+
+Three faces, three jobs: **Archivo 700 at `wdth` 92** for h1/h2, **Geist** for body and UI, **IBM
+Plex Mono** for figures and labels. Loaded as one Google Fonts request per page with
+`preconnect` + `link` in the head.
+
+**Gotchas worth keeping:**
+
+- **`document.fonts.check()` lies.** It returned `false` for a face that was loaded and `true` in
+  cases where the face had not arrived. The reliable test is measurement: render the same string in
+  the target family and in its generic fallback and compare widths. Every font claim in this cycle
+  was verified that way.
+- **Fonts load lazily.** Screenshots taken right after `document.fonts.ready` caught the page before
+  a face had downloaded. Force each face with `document.fonts.load('<weight> <size>px "<family>"')`
+  before capturing, or the comparison is of the fallback.
+- **Discrete weight requests silently clamp.** `wght@300;400;450;500;600;700` cannot render 560.
+  Request a range (`wght@400..700`) for real intermediate weights.
+- **`.cp h1` beats `.cp-hero-title`.** Class + element out-specifies class alone. Display classes and
+  element-level heading rules must not both set weight.
+- **Variable axes are expensive.** Archivo's width axis costs 87.9 KB against 34.1 KB without it, for
+  a 7.2% narrowing. Measured with `curl` against the `fonts.gstatic.com` URL in the served CSS.
+
+**To audit typography again:** load the page, force-load every face, then read
+`getComputedStyle(el).fontFamily` and `.fontWeight` on one element per role, and separately confirm
+each family renders by measuring it against its fallback. Checking only the computed style tells you
+what the CSS asked for, not what the browser drew.
 
 ### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger
 
@@ -304,3 +331,7 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - `Add the POAS scroll moment and gate /copilot reveals on .js`
 - `Replace the hero eyebrow with a BETA announcement pill`
 - `Remove dead code and orphaned assets from the repo`
+- `Ignore AI tooling files so they can never reach public_html`
+- `Also ignore .impeccable/ detector config`
+- `Replace Geist headings with Newsreader and Geist Mono with IBM Plex Mono`
+- `Set display type in Archivo instead of Geist`
