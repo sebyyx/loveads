@@ -5,6 +5,38 @@ each decision live in `WORKLOG.md`; this file is the index of *what changed, whe
 
 ---
 
+## 2026-08-04
+
+### Cookie consent bar with Google Consent Mode v2
+
+GA4 went live the day before and set analytics cookies on every page, while the privacy policy named
+consent as the legal basis and nothing on the site asked for it. That gap is now closed.
+
+A non-blocking bar sits at the bottom on the dark ground the design system reserves for full-bleed
+punctuation, so it reads as the system speaking rather than as more content. Two buttons, identical
+in size and shape — GDPR requires refusing to be as easy as accepting, and a quiet "decline" link
+beside a prominent "accept" is what regulators penalise. No category toggles: exactly one
+non-essential category exists, and anything more would be compliance theatre.
+
+**Consent Mode v2 ordering:** the defaults (`denied` across `ad_storage`, `analytics_storage`,
+`ad_user_data`, `ad_personalization`) are set inline in `<head>`, because they must run before
+`gtag.js` or Consent Mode does not apply at all. The library itself is now injected after the `load`
+event, which takes 165 KB off the critical path — at the stated cost of not counting visitors who
+leave within about two seconds.
+
+The decision lives in `localStorage`, not a cookie; setting a cookie to record a refusal of cookies
+is self-defeating. It is re-asked after six months. A "Cookie settings" link in every footer reopens
+the bar, because GDPR grants a right to withdraw consent and the policy already promises it.
+
+On `/copilot` the sticky CTA now yields while the bar is up — they occupied the same strip, and it is
+the right hierarchy anyway: do not ask someone to sign up before telling them what you collect.
+
+**Verified end to end:** no cookies before a choice; **no cookies after Decline, even across a
+reload**; `_ga` and `_ga_1BF1ET6PWQ` only after Accept. Contrast on the dark bar measures 10.5:1 for
+body text and 5.2:1 on the accept button. No horizontal overflow at 390px.
+
+---
+
 ## 2026-08-03
 
 ### The site is no longer set entirely in Geist

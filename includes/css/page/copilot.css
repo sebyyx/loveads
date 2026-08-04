@@ -795,3 +795,47 @@ body.cp {
   .cp-sticky-inner { justify-content: center; }
   .cp-sticky .btn { width: 100%; justify-content: center; }
 }
+
+/* ---- Cookie consent bar ----------------------------------------------------
+   Full-bleed dark bar: in this system dark full-bleed sections are the page's
+   punctuation, so it reads as the system speaking rather than as more content.
+   Colours are literal rather than tokens so the bar is identical on both
+   stylesheets, which name their variables differently. */
+.consent{position:fixed;left:0;right:0;bottom:0;z-index:9000;
+  background:#19191b;border-top:1px solid #33333a;color:#f3f2ef;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .3s cubic-bezier(.2,.7,.3,1),transform .3s cubic-bezier(.2,.7,.3,1);}
+.consent.is-in{opacity:1;transform:none;}
+.consent-in{max-width:1180px;margin:0 auto;padding:18px 40px;
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+.consent-txt{margin:0;flex:1 1 340px;font-size:14.5px;line-height:1.55;color:#c9c8c4;
+  font-family:'Geist',system-ui,-apple-system,sans-serif;}
+.consent-txt b{color:#f3f2ef;font-weight:600;}
+.consent-txt a{color:#f3f2ef;text-decoration:underline;text-underline-offset:3px;}
+.consent-txt a:hover{color:#fff;}
+.consent-btns{display:flex;gap:10px;flex:none;}
+/* Both buttons are the same size and shape on purpose: GDPR requires refusing to be
+   as easy as accepting, and a quiet "decline" link beside a big "accept" is exactly
+   what gets penalised. */
+.consent-btn{display:inline-flex;align-items:center;justify-content:center;
+  height:44px;padding:0 22px;border-radius:8px;cursor:pointer;white-space:nowrap;
+  font-family:'Geist',system-ui,-apple-system,sans-serif;
+  font-size:14.5px;font-weight:500;letter-spacing:-.01em;
+  transition:background .16s,border-color .16s,transform .14s cubic-bezier(.2,.7,.3,1);}
+.consent-btn:focus-visible{outline:2px solid #f3f2ef;outline-offset:2px;}
+.consent-no{background:transparent;border:1px solid #55555f;color:#f3f2ef;}
+.consent-no:hover{border-color:#8a8a90;transform:translateY(-1px);}
+.consent-yes{background:#d0224c;border:1px solid #d0224c;color:#fff;}
+.consent-yes:hover{background:#b91e44;transform:translateY(-1px);}
+@media (max-width:680px){
+  .consent-in{padding:16px 22px;gap:14px;}
+  .consent-btns{width:100%;}
+  .consent-btn{flex:1 1 0;}
+}
+@media (prefers-reduced-motion:reduce){
+  .consent{transition:none;}
+  .consent-btn:hover{transform:none;}
+}
+
+/* While the consent bar is up it owns the bottom of the screen. */
+body.consent-open .cp-sticky{display:none !important;}

@@ -176,6 +176,26 @@ Plex Mono** for figures and labels. Loaded as one Google Fonts request per page 
 each family renders by measuring it against its fallback. Checking only the computed style tells you
 what the CSS asked for, not what the browser drew.
 
+### Cookie consent (2026-08-04)
+
+Files: `includes/js/consent.js`, consent CSS appended to both stylesheets, inline Consent Mode
+defaults in each page `<head>`. Spec:
+`docs/superpowers/specs/2026-08-04-cookie-consent-design.md`.
+
+**The ordering constraint that decides the whole design:** `gtag('consent','default', …)` must
+execute before `gtag.js` loads, or Consent Mode is not applied. That is why the defaults are inline
+in `<head>` (~300 bytes) while the 165 KB library is injected from `consent.js` after the `load`
+event. Reversing those two silently disables the whole mechanism, and nothing visibly breaks.
+
+**Gotcha when testing:** the harness first reported zero hits after Accept, which looked like consent
+was blocking measurement. It was the test's own three-second wait — `gtag.js` is injected after
+`load`, then has to download and initialise. At six seconds the hit fires and `_ga` cookies appear.
+Do not conclude anything about deferred analytics from a short timeout.
+
+**The assertion worth re-running after any change:** clear storage, load, click Decline, reload, and
+check `Network.getAllCookies` is still empty. Counting `/g/collect` requests is not the test —
+Consent Mode deliberately sends cookieless pings in the denied state, so a hit there is correct.
+
 ### Accessibility & SEO audit (2026-08-03)
 
 Lighthouse on live before the work: **Performance 76 · Accessibility 92 · Best Practices 100 ·

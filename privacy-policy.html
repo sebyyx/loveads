@@ -12,11 +12,27 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
 <link rel="apple-touch-icon" href="apple-touch-180.png" />
 <link rel="manifest" href="/site.webmanifest" />
-  <!-- Google tag (gtag.js) — GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BF1ET6PWQ"></script>
+  <!-- Google tag (gtag.js) — GA4 with Consent Mode v2.
+       The defaults must be set before gtag.js loads or Consent Mode does not apply,
+       so this block is inline and the library is injected later, after load. -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied', analytics_storage: 'denied',
+      ad_user_data: 'denied', ad_personalization: 'denied',
+      wait_for_update: 500
+    });
+    try {
+      var c = JSON.parse(localStorage.getItem('loveads_consent') || 'null');
+      var fresh = c && (Date.now() - new Date(c.at).getTime()) < 15552000000; // 6 months
+      if (fresh && c.granted) {
+        gtag('consent', 'update', {
+          ad_storage: 'granted', analytics_storage: 'granted',
+          ad_user_data: 'granted', ad_personalization: 'granted'
+        });
+      }
+    } catch (e) {}
     gtag('js', new Date());
     gtag('config', 'G-1BF1ET6PWQ');
   </script>
@@ -66,6 +82,7 @@
 }
 </script>
 
+  <script defer src="/includes/js/consent.js"></script>
 </head>
 <body>
 
@@ -204,7 +221,7 @@
       </div>
       <div>
         <h2>Legal</h2>
-        <ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul>
+        <ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a><a href="#" data-consent-reopen>Cookie settings</a></li></ul>
       </div>
       <div>
         <h2>Company</h2>
