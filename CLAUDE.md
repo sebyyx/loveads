@@ -27,6 +27,9 @@ the other.
   committing a new file at the root, ask whether the world should see it.
 - Apache, PHP 8.3, **HTTP/1.1** — no multiplexing, so one fewer request beats a little duplication.
   This is why `@font-face` blocks are repeated in both stylesheets rather than split into a file.
+- **Never `git add` a whole directory.** `git add includes/fonts/` once swept nine untracked 2018
+  webfonts into a commit and published 496 KB of dead files. Stage named paths, then read
+  `git status` before committing.
 
 ## Current stack
 

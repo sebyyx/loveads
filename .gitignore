@@ -38,3 +38,9 @@ error_log
 # a tool run via npx and has no business in public_html.
 node_modules/
 .npm/
+
+# Legacy 2018 webfonts — kept locally as the only copy of the old site, never deployed.
+# They were committed by accident on 2026-08-04 when the self-hosted fonts were added
+# with `git add includes/fonts/`; ignoring them stops that recurring.
+includes/fonts/Poppins-*
+includes/fonts/ProximaNova*
