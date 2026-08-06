@@ -176,6 +176,23 @@ Plex Mono** for figures and labels. Loaded as one Google Fonts request per page 
 each family renders by measuring it against its fallback. Checking only the computed style tells you
 what the CSS asked for, not what the browser drew.
 
+### Tooling (2026-08-06)
+
+Four of Emil Kowalski's animation skills installed at user scope in `~/.claude/skills/`:
+`review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`.
+Installed with `npx skills add emilkowalski/skills -s <name> --agent claude-code --global`; note the
+CLI needs a **repeated `-s` flag** per skill, a comma-separated list is silently rejected.
+
+**Deliberately not installed:** `emil-design-eng` and `apple-design` overlap Impeccable and
+`DESIGN.md`, and two design authorities that can contradict each other are worse than one.
+`pick-ui-library` and `prototype` have nothing to act on here — no component library, no build step.
+
+Nothing was written into the repo; the install is user-level only.
+
+**Not yet run.** The obvious first target is `/review-animations` over the four motion systems now on
+the site: the pinned POAS scrub, the BETA pill's 5s conic sweep, the hero mock's 4.2s cross-fade, and
+the reveal staggers.
+
 ### Cookie consent (2026-08-04)
 
 Files: `includes/js/consent.js`, consent CSS appended to both stylesheets, inline Consent Mode
