@@ -793,6 +793,13 @@
       hTabs.forEach(function (t) { t.addEventListener('click', function () { showView(t.dataset.view); startCycle(); }); });
       heroMock.addEventListener('mouseenter', stopCycle);
       heroMock.addEventListener('mouseleave', startCycle);
+      // Hovering was the only way to stop this. A keyboard user tabbing into the
+      // tabs had the view swap out from under them every 4.2s with no way to
+      // hold it — focus pauses the cycle the same way the pointer does.
+      heroMock.addEventListener('focusin', stopCycle);
+      heroMock.addEventListener('focusout', function (e) {
+        if (!heroMock.contains(e.relatedTarget)) startCycle();
+      });
       startCycle();
     }
 

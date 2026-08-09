@@ -72,18 +72,25 @@ img{max-width:100%;display:block;}
   border:1px solid var(--line-2);background:var(--surface);color:var(--text);
   transition:transform .14s cubic-bezier(.2,.7,.3,1),background .16s,border-color .16s,box-shadow .16s;}
 .btn svg{width:17px;height:17px;}
-.btn:hover{transform:translateY(-1.5px);}
 .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;
   box-shadow:0 1px 2px rgba(160,20,55,.3),inset 0 1px 0 rgba(255,255,255,.18);}
-.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);box-shadow:0 10px 24px -8px rgba(208,34,76,.5);}
 .btn-dark{background:var(--ink);border-color:var(--ink);color:var(--on-ink);}
-.btn-dark:hover{background:#000;}
 .btn-ghost{background:transparent;border-color:transparent;color:var(--text);padding-left:6px;padding-right:6px;}
-.btn-ghost:hover{color:var(--accent-text);transform:none;}
 .btn-ghost .arrow{transition:transform .16s;}
-.btn-ghost:hover .arrow{transform:translateX(3px);}
 .btn-on-ink{border-color:var(--ink-line);background:transparent;color:var(--on-ink);}
-.btn-on-ink:hover{background:rgba(255,255,255,.06);}
+/* Every hover state on the site is gated behind a real pointer. On touch the tap
+   fires a synthetic hover and the state stays stuck after the finger lifts —
+   a lifted button that never comes back down. */
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-1.5px);}
+  .btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);box-shadow:0 10px 24px -8px rgba(208,34,76,.5);}
+  .btn-dark:hover{background:#000;}
+  .btn-ghost:hover{color:var(--accent-text);transform:none;}
+  .btn-ghost:hover .arrow{transform:translateX(3px);}
+  .btn-on-ink:hover{background:rgba(255,255,255,.06);}
+}
+/* The press is the deliberate half; the release snaps back on the same curve. */
+.btn:active{transform:translateY(0) scale(.985);}
 .btn-sm{height:42px;font-size:14px;padding:0 18px;}
 
 /* ---------- nav ---------- */
@@ -95,7 +102,6 @@ img{max-width:100%;display:block;}
 .brand-wm{height:26px;width:auto;display:block;}
 .nav-links{display:flex;align-items:center;gap:4px;margin-left:8px;}
 .nav-links a{padding:8px 14px;border-radius:7px;font-size:14.5px;color:var(--text-2);font-weight:450;transition:color .14s,background .14s;}
-.nav-links a:hover{color:var(--text);background:rgba(25,25,27,.04);}
 .nav-cta{margin-left:auto;display:flex;align-items:center;gap:10px;}
 .nav-toggle{display:none;}
 
@@ -182,17 +188,14 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .chips{display:flex;flex-wrap:wrap;gap:9px;}
 .chip{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:13.5px;letter-spacing:-0.01em;color:var(--text);background:var(--surface);border:1px solid var(--line-2);padding:9px 14px;border-radius:9px;transition:border-color .15s,color .15s;}
 .chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;}
-.chip:hover{border-color:var(--accent);}
 
 /* ---------- services ---------- */
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);}
 .svc{padding:30px 28px 34px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--canvas);transition:background .18s;position:relative;}
-.svc:hover{background:var(--surface);}
 .svc .n{font-family:var(--mono);font-size:12px;color:var(--text-3);letter-spacing:0.06em;}
 .svc h3{font-size:19px;font-weight:560;letter-spacing:-0.02em;margin-top:18px;}
 .svc p{font-size:14.5px;color:var(--text-2);line-height:1.55;margin-top:10px;}
 .svc .dot{position:absolute;top:30px;right:28px;width:8px;height:8px;border-radius:50%;background:var(--line-2);transition:background .18s;}
-.svc:hover .dot{background:var(--accent);}
 
 /* ---------- approach marquee ---------- */
 .approach{background:var(--ink);color:var(--on-ink);padding:0;overflow:hidden;}
@@ -207,21 +210,39 @@ section{padding:clamp(72px,9vw,116px) 0;}
 
 /* ---------- portfolio ---------- */
 .work-list{border-top:1px solid var(--line);}
+/* The inset on hover moves on `transform`, not `padding`.
+   Animating padding here relayouted a four-column grid (52px 212px 1fr auto) on
+   every frame, and because the 1fr column narrowed, the description could rewrap
+   mid-animation. translateX moves the same 16px on the compositor: the first
+   three cells go right, the arrow goes left, which is exactly what padding
+   24px/8px produced — minus the reflow. */
 .work{display:grid;grid-template-columns:52px 212px 1fr auto;gap:26px;align-items:center;padding:30px 8px;border-bottom:1px solid var(--line);
-  transition:padding .2s,background .2s;cursor:pointer;position:relative;}
-.work:hover{padding-left:24px;padding-right:24px;background:var(--surface);}
+  transition:background .2s;cursor:pointer;position:relative;}
+.work .idx,.work .body{transition:transform .2s cubic-bezier(.2,.7,.3,1);}
 .work .idx{font-family:var(--mono);font-size:14px;color:var(--text-3);}
 .work-logo{width:212px;height:96px;border-radius:16px;background:var(--surface);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;padding:0 26px;transition:border-color .18s,box-shadow .18s;}
-.work:hover .work-logo{border-color:var(--line-2);box-shadow:0 10px 26px -14px rgba(20,16,12,.42);}
+  display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;padding:0 26px;
+  transition:border-color .18s,box-shadow .18s,transform .2s cubic-bezier(.2,.7,.3,1);}
+/* Gated: on a touchscreen the tap fires a false hover and the row stays lifted
+   under the finger after it lets go. */
+@media (hover:hover) and (pointer:fine){
+  .work:hover{background:var(--surface);}
+  .work:hover .idx,.work:hover .body{transform:translateX(16px);}
+  .work:hover .work-logo{border-color:var(--line-2);box-shadow:0 10px 26px -14px rgba(20,16,12,.42);transform:translateX(16px);}
+}
 .work-logo img{max-width:100%;max-height:42px;width:auto;height:auto;object-fit:contain;}
 .work .body .tags-top{display:flex;gap:8px;margin-bottom:0;}
 .work .body .tag-cat{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-text);}
 .work .body p{font-size:16px;color:var(--text);margin-top:12px;max-width:600px;line-height:1.5;font-weight:450;}
 .work .body .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
 .work .body .tags span{font-size:12px;color:var(--text-3);border:1px solid var(--line);border-radius:6px;padding:4px 9px;}
-.work .go{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex:none;transition:all .18s;}
-.work:hover .go{background:var(--accent);border-color:var(--accent);color:#fff;transform:rotate(-45deg);}
+.work .go{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex:none;
+  transition:background .18s,border-color .18s,color .18s,transform .2s cubic-bezier(.2,.7,.3,1);}
+@media (hover:hover) and (pointer:fine){
+  /* -16px is the mirror of the +16px on the other three cells: together they
+     reproduce the old padding:24px inset without touching layout. */
+  .work:hover .go{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateX(-16px) rotate(-45deg);}
+}
 
 /* ---------- contact ---------- */
 .contact{background:var(--ink);color:var(--on-ink);}
@@ -231,7 +252,6 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .contact-info{margin-top:34px;display:flex;flex-direction:column;gap:18px;}
 .contact-info .row{display:flex;gap:13px;align-items:flex-start;font-size:15px;color:var(--on-ink);}
 .contact-info .row .ico{width:20px;height:20px;color:#ff6b8a;flex:none;margin-top:2px;}
-.contact-info a:hover{color:#ff6b8a;}
 .form{background:rgba(255,255,255,.04);border:1px solid var(--ink-line);border-radius:18px;padding:30px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .field{margin-bottom:16px;min-width:0;}
@@ -251,15 +271,34 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .footer h2{font-family:var(--mono);font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:16px;font-weight:500;}
 .footer ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
 .footer ul a{font-size:14.5px;color:var(--text-2);}
-.footer ul a:hover{color:var(--accent-text);}
 .footer .company{font-size:13px;color:var(--text-2);line-height:1.7;}
 .footer-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:54px;padding-top:26px;border-top:1px solid var(--line);font-size:13px;color:var(--text-3);flex-wrap:wrap;gap:14px;}
 .footer-bottom a{color:var(--text-3);}
-.footer-bottom a:hover{color:var(--text);}
 
 /* ---------- reveal (progressive enhancement) ---------- */
-.js .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1);}
+/* Remaining hover states, gated behind a real pointer for the same reason. */
+@media (hover:hover) and (pointer:fine){
+  .nav-links a:hover{color:var(--text);background:rgba(25,25,27,.04);}
+  .chip:hover{border-color:var(--accent);}
+  .svc:hover{background:var(--surface);}
+  .svc:hover .dot{background:var(--accent);}
+  .contact-info a:hover{color:#ff6b8a;}
+  .footer ul a:hover{color:var(--accent-text);}
+  .footer-bottom a:hover{color:var(--text);}
+  .legal-back:hover{color:var(--accent-text);}
+  .legal-body a:hover{color:var(--accent);}
+}
+/* 450ms, not 700. This is the entrance every section on the site uses, and at
+   700ms the content reads as arriving reluctantly; under half a second it reads
+   as deliberate. The curve is unchanged. */
+.js .reveal{opacity:0;transform:translateY(20px);transition:opacity .45s cubic-bezier(.2,.7,.3,1),transform .45s cubic-bezier(.2,.7,.3,1);}
 .js .reveal.in{opacity:1;transform:none;}
+/* The single biggest movement on the site had no reduced-motion path, while
+   /copilot's identical reveal (copilot.css) has had one all along — an omission,
+   not a decision. Content still appears; it just stops travelling. */
+@media (prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;transform:none;transition:none;}
+}
 
 /* ---------- responsive ---------- */
 @media(max-width:1000px){
@@ -279,7 +318,10 @@ section{padding:clamp(72px,9vw,116px) 0;}
   .stats-row .s{border-right:0;border-bottom:1px solid var(--line);}
   .stats-row .s:last-child{border-bottom:0;}
   .work{grid-template-columns:1fr;gap:16px;padding:26px 4px;align-items:start;}
-  .work:hover{padding-left:4px;padding-right:4px;background:transparent;}
+  /* The row is one column here, so the hover inset has nothing to inset against —
+     cancelled, exactly as the padding version was. */
+  .work:hover{background:transparent;}
+  .work:hover .idx,.work:hover .body,.work:hover .work-logo{transform:none;}
   .work .idx{display:none;}
   .work-logo{width:140px;height:72px;border-radius:13px;padding:0 16px;}
   .work-logo img{max-height:32px;}
@@ -305,7 +347,6 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .legal{padding:clamp(52px,7vw,92px) 0 clamp(64px,9vw,112px);}
 .legal-inner{max-width:760px;margin:0 auto;}
 .legal-back{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12.5px;letter-spacing:0.04em;color:var(--text-3);margin-bottom:30px;transition:color .14s;}
-.legal-back:hover{color:var(--accent-text);}
 .legal-back svg{width:15px;height:15px;}
 .legal h1{font-family:var(--display);font-size:clamp(29px,4.2vw,44px);line-height:1.06;letter-spacing:-0.03em;font-weight:700;font-variation-settings:'wdth' 92;margin-top:18px;}
 .legal .page-meta{font-family:var(--mono);font-size:13px;color:var(--text-3);margin-top:16px;letter-spacing:0.02em;}
@@ -316,7 +357,6 @@ section{padding:clamp(72px,9vw,116px) 0;}
 .legal-body li{position:relative;padding-left:22px;font-size:16px;line-height:1.6;color:var(--text-2);}
 .legal-body li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
 .legal-body a{color:var(--accent-text);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;}
-.legal-body a:hover{color:var(--accent);}
 .legal-body strong{color:var(--text);font-weight:560;}
 
 /* ---- Cookie consent bar ----------------------------------------------------
@@ -335,7 +375,6 @@ section{padding:clamp(72px,9vw,116px) 0;}
   font-family:'Geist',system-ui,-apple-system,sans-serif;}
 .consent-txt b{color:#f3f2ef;font-weight:600;}
 .consent-txt a{color:#f3f2ef;text-decoration:underline;text-underline-offset:3px;}
-.consent-txt a:hover{color:#fff;}
 .consent-btns{display:flex;gap:10px;flex:none;}
 /* Both buttons are the same size and shape on purpose: GDPR requires refusing to be
    as easy as accepting, and a quiet "decline" link beside a big "accept" is exactly
@@ -347,9 +386,14 @@ section{padding:clamp(72px,9vw,116px) 0;}
   transition:background .16s,border-color .16s,transform .14s cubic-bezier(.2,.7,.3,1);}
 .consent-btn:focus-visible{outline:2px solid #f3f2ef;outline-offset:2px;}
 .consent-no{background:transparent;border:1px solid #55555f;color:#f3f2ef;}
-.consent-no:hover{border-color:#8a8a90;transform:translateY(-1px);}
 .consent-yes{background:#d0224c;border:1px solid #d0224c;color:#fff;}
-.consent-yes:hover{background:#b91e44;transform:translateY(-1px);}
+/* Gated: on touch, the tap fires a false hover and the lifted state sticks
+   under the finger after it lets go. */
+@media (hover:hover) and (pointer:fine){
+  .consent-txt a:hover{color:#fff;}
+  .consent-no:hover{border-color:#8a8a90;transform:translateY(-1px);}
+  .consent-yes:hover{background:#b91e44;transform:translateY(-1px);}
+}
 @media (max-width:680px){
   .consent-in{padding:16px 22px;gap:14px;}
   .consent-btns{width:100%;}
