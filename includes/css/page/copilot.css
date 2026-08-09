@@ -88,6 +88,15 @@ body.cp {
   letter-spacing: -0.01em;
 }
 
+/* ---- Icons ----
+   These were Bootstrap Icons, a 97 KB render-blocking stylesheet on a third-party
+   origin plus a separate woff2 request, for 24 glyphs. They are now inline SVG
+   lifted verbatim from the same package (v1.13.1), so the artwork is identical.
+   Sized in `em` and filled with `currentColor` so every existing font-size and
+   color rule keeps working exactly as it did on the font. The -.125em nudge is
+   Bootstrap Icons' own baseline correction for inline SVG. */
+.cp .bi { display: inline-block; vertical-align: -.125em; flex: none; }
+
 /* ---- Buttons ---- */
 .cp .btn {
   font-family: inherit;
@@ -288,7 +297,7 @@ body.cp {
 }
 .cp-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
 .cp-hero-note { font-size: 13px; color: var(--cp-muted); }
-.cp-hero-note i { color: var(--cp-good); }
+.cp-hero-note i, .cp-hero-note .bi { color: var(--cp-good); }
 
 /* Hero KPI mock card */
 .cp-mock {
@@ -304,7 +313,7 @@ body.cp {
   border-bottom: 1px solid var(--cp-border);
   background: var(--cp-bg-soft);
 }
-.cp-mock-bar i { font-size: 13px; color: var(--cp-accent); }
+.cp-mock-bar i, .cp-mock-bar .bi { font-size: 13px; color: var(--cp-accent); }
 .cp-mock-bar span { font-size: 12px; color: var(--cp-muted); font-weight: 500; }
 .cp-mock-dots { margin-left: auto; display: flex; gap: 5px; }
 .cp-mock-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--cp-border-strong); }
@@ -349,7 +358,7 @@ body.cp {
   font-size: 15px; font-weight: 600; color: var(--cp-ink);
   box-shadow: var(--cp-shadow);
 }
-.cp-logo-pill i { font-size: 18px; }
+.cp-logo-pill i, .cp-logo-pill .bi { font-size: 18px; }
 .cp-logo-arrow { color: var(--cp-muted); font-size: 20px; }
 /* On phones the pills stack, so the arrow gets its own line and points down at Copilot
    (same treatment as .cp-loop-arrow). */
@@ -553,7 +562,7 @@ body.cp {
   border: 1px solid var(--cp-border); border-radius: 14px; background: var(--cp-bg-soft);
   padding: 18px 24px; font-size: 15px; color: var(--cp-text);
 }
-.cp-trust i { color: var(--cp-good); font-size: 22px; flex-shrink: 0; }
+.cp-trust i, .cp-trust .bi { color: var(--cp-good); font-size: 22px; flex-shrink: 0; }
 .cp-cta {
   text-align: center;
   background:
@@ -633,7 +642,7 @@ body.cp {
 .cp-leak-total b { color: var(--cp-accent); font-size: 16px; }
 
 .cp-report-head { font-size: 13px; font-weight: 700; color: var(--cp-ink); margin-bottom: 10px; }
-.cp-report-head i { color: var(--cp-accent); }
+.cp-report-head i, .cp-report-head .bi { color: var(--cp-accent); }
 .cp-report-body { font-size: 13.5px; color: var(--cp-text); line-height: 1.55; margin: 0 0 12px; }
 .cp-report-body b { color: var(--cp-ink); }
 .cp-report-action {
@@ -706,7 +715,7 @@ body.cp {
   transition: color .16s, background .16s, border-color .16s;
   display: inline-flex; align-items: center; gap: 7px;
 }
-.cp-ftab i { font-size: 15px; }
+.cp-ftab i, .cp-ftab .bi { font-size: 15px; }
 .cp-ftab.is-active { background: var(--cp-accent); border-color: var(--cp-accent); color: #fff; box-shadow: 0 6px 18px rgba(208,34,76,0.25); }
 .cp-tabpanels { position: relative; }
 .cp-tabpanel {
@@ -748,10 +757,10 @@ body.cp {
 .cp-tp-prodrow b.bad { color: var(--cp-accent); }
 
 .cp-tp-alert { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--cp-ink); background: #fff; border: 1px solid rgba(208,34,76,0.22); border-radius: 10px; padding: 11px 13px; margin-bottom: 10px; }
-.cp-tp-alert i { color: var(--cp-accent); }
+.cp-tp-alert i, .cp-tp-alert .bi { color: var(--cp-accent); }
 .cp-tp-alert b { margin-left: auto; color: var(--cp-muted); font-weight: 600; }
 .cp-tp-alert.ok { border-color: rgba(18,138,90,0.25); }
-.cp-tp-alert.ok i { color: var(--cp-good); }
+.cp-tp-alert.ok i, .cp-tp-alert.ok .bi { color: var(--cp-good); }
 .cp-tp-alert.ok b { color: var(--cp-good); }
 .cp-tp-accuracy { display: flex; justify-content: space-between; align-items: center; padding: 12px 13px; background: var(--cp-bg-soft); border-radius: 10px; font-size: 13px; color: var(--cp-text); }
 .cp-tp-accuracy b { font-size: 20px; color: var(--cp-ink); }
