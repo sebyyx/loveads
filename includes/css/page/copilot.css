@@ -44,6 +44,87 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* =================================================
+   LOCAL GRID + RESET  (replaces bootstrap.min.css)
+
+   This page loaded 227 KB of Bootstrap — 33 KB on the wire — render-blocking
+   from cdn.jsdelivr.net, to use nine grid classes and two alignment utilities.
+   On mobile the cost was not the bytes but the origin: DNS + TCP + TLS to a
+   second host had to complete before anything could paint. PageSpeed put this
+   page at 99 desktop / 68 mobile; that gap is network-bound.
+
+   What follows is only what the markup actually uses, plus the slice of
+   Bootstrap's Reboot the page silently depended on (body margin, heading and
+   paragraph margins, form-control font inheritance). Values are Bootstrap
+   5.3.8's own, so the layout is reproduced rather than reinterpreted.
+   ================================================= */
+
+/* -- Reboot subset -- */
+body { margin: 0; }
+h1, h2, h3, h4, h5, h6 { margin-top: 0; margin-bottom: .5rem; }
+p { margin-top: 0; margin-bottom: 1rem; }
+ul, ol { margin-top: 0; margin-bottom: 1rem; padding-left: 2rem; }
+button, input, optgroup, select, textarea { margin: 0; font-family: inherit; font-size: inherit; line-height: inherit; }
+button { text-transform: none; }
+button, [type="button"], [type="submit"] { -webkit-appearance: button; }
+img, svg { vertical-align: middle; }
+strong, b { font-weight: bolder; }
+
+/* -- Container --
+   Bootstrap's breakpoints and max-widths verbatim: sm 576/540, md 768/720,
+   lg 992/960, xl 1200/1140, xxl 1400/1320. */
+.container {
+  --bs-gutter-x: 1.5rem;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 576px)  { .container { max-width: 540px; } }
+@media (min-width: 768px)  { .container { max-width: 720px; } }
+@media (min-width: 992px)  { .container { max-width: 960px; } }
+@media (min-width: 1200px) { .container { max-width: 1140px; } }
+@media (min-width: 1400px) { .container { max-width: 1320px; } }
+
+/* -- Row and columns --
+   The gutter lives in custom properties exactly as Bootstrap names them, so the
+   phone override further down this file (--bs-gutter-x on .g-4/.g-5) keeps
+   working untouched. */
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-.5 * var(--bs-gutter-x));
+  margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+.row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-top: var(--bs-gutter-y);
+}
+.g-4 { --bs-gutter-x: 1.5rem; --bs-gutter-y: 1.5rem; }
+.g-5 { --bs-gutter-x: 3rem;   --bs-gutter-y: 3rem; }
+
+@media (min-width: 768px) {
+  .col-md-4 { flex: 0 0 auto; width: 33.33333333%; }
+  .col-md-6 { flex: 0 0 auto; width: 50%; }
+}
+@media (min-width: 992px) {
+  .col-lg-3 { flex: 0 0 auto; width: 25%; }
+  .col-lg-4 { flex: 0 0 auto; width: 33.33333333%; }
+  .col-lg-6 { flex: 0 0 auto; width: 50%; }
+}
+
+/* -- Alignment utilities in use -- */
+.align-items-center  { align-items: center !important; }
+.align-items-stretch { align-items: stretch !important; }
+
 html { scroll-behavior: smooth; overflow-x: hidden; }
 html, body.cp { max-width: 100%; }
 
