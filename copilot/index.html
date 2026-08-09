@@ -710,7 +710,10 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap's JS bundle used to load here: 79 KB for nothing. The page has no
+       data-bs-* attribute, never touches the `bootstrap` global, and uses no JS
+       component — the tab strips are .cp-tab / .cp-ftab, driven by the script
+       below. Only Bootstrap's grid CSS is still in use. -->
   <!-- GSAP + ScrollTrigger power the single scroll-driven moment (the POAS section).
        Deferred and fully optional: if these fail to load the page behaves as it did before. -->
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
