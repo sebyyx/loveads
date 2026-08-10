@@ -33,7 +33,9 @@ non-obvious operational details (deployment, verification, gotchas) needed to co
   A `git push` to GitHub (`sebyyx/loveads`, branch `main`) does **NOT** auto-deploy.
 - Workflow: Claude commits + pushes to `main` → **owner clicks Deploy in cPanel** → live in ~1–2 min
   (propagation is not instant; wait a minute or two before verifying live).
-- `.cpanel.yml` runs: `rsync -av --delete . $DEPLOYPATH` (excludes `.git`, `.cpanel.yml`, `config.php`).
+- `.cpanel.yml` runs: `rsync -av --delete . $DEPLOYPATH`, excluding `.git`, `.cpanel.yml`,
+  `config.php`, `docs`, `NOTES.md` and `CLAUDE.md`. **Everything else tracked at the root is publicly
+  served** — check before committing a new root file.
   - **`--delete` means anything not tracked in git is removed from `public_html` on deploy.**
   - **Repo cleanup 2026-08-02: 232 tracked files → 33.** Removed `includes/Swift/` (155 files, 792 KB —
   Swift Mailer, dead: `contact.php` uses `mail()` directly and the library is unmaintained since 2021),
@@ -44,10 +46,15 @@ non-obvious operational details (deployment, verification, gotchas) needed to co
   four pages with `Network.responseReceived` to catch 404s. Checking only one direction is how you
   delete something that is still used.
 - Legacy **untracked** files exist locally and are intentionally NOT committed (old 2018–2019 assets:
-    `includes/fonts/`, `includes/plugin/`, `includes/js/`, `includes/css/common/`, `includes/css/plugin/`,
-    `includes/css/page/default.css`, `hai-sa-ne-cunoastem.php`, `loveads.jpg`, `NOTES.md`). The live site
-    does not depend on them (homepage + legal use `site.css` + Geist; `/copilot` uses `copilot.css` +
-    CDN Bootstrap/Icons + Geist).
+    `includes/plugin/`, `includes/js/base.js`, `includes/css/common/`, `includes/css/plugin/`,
+    `includes/css/page/default.css`, `hai-sa-ne-cunoastem.php`, `loveads.jpg`, `NOTES.md`, plus the
+    2018 webfonts under `includes/fonts/` which `.gitignore:45-46` excludes by name). **Not all of
+    `includes/js/` is legacy — `consent.js` is tracked and live; only `base.js` is not.** 50 files are
+    tracked as of 2026-08-10.
+  - The live site does not depend on any of them. Homepage and legal pages use `site.css`; `/copilot`
+    uses `copilot.css`. **As of 2026-08-10 neither page loads a third-party resource in its markup** —
+    Bootstrap, Bootstrap Icons and GSAP were all removed, and `gtag.js` is injected at runtime by
+    `consent.js` after the load event rather than being hard-coded.
 - `.htaccess` forces HTTPS and pins PHP 8.3. `NOTES.md` is gitignored (local scratch).
 
 ---
@@ -104,8 +111,15 @@ favicons. JSON-LD:
 
 ## 6. Copilot landing (`copilot/index.html`)
 
-Design: **light "control tower"** aesthetic, crimson accent `#d0224c`, **Geist** + Geist Mono fonts —
-mirrors the app for a continuous site→app transition. Styles in `includes/css/page/copilot.css`.
+Design: **light "control tower"** aesthetic, crimson accent `#d0224c` — mirrors the app for a
+continuous site→app transition. Styles in `includes/css/page/copilot.css`.
+
+Type is **Archivo** (display), **Geist** (body) and **IBM Plex Mono** (figures and labels), all
+self-hosted — the same three faces as the rest of the site since 2026-08-03, see §6 Typography. This
+paragraph previously said "Geist + Geist Mono", which stopped being true then.
+
+**No third-party CSS or JS.** Bootstrap's grid was replaced with a local one inside `copilot.css`,
+Bootstrap Icons became inline SVG, and GSAP was removed — all on 2026-08-10, see `CHANGELOG.md`.
 
 Section order: Hero → Unify logos → 3 questions → POAS → **POAS calculator** → Leaks & opportunities →
 Decision loop → **Features (tabs)** → How it works → Audience → Pricing (4 cards, Founding highlighted)
