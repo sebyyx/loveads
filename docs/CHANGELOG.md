@@ -5,6 +5,111 @@ each decision live in `WORKLOG.md`; this file is the index of *what changed, whe
 
 ---
 
+## 2026-08-10
+
+### /copilot went from 68 to 86 on mobile, by deleting things
+
+PageSpeed rated the Copilot page **99 on desktop and 68 on mobile**. The same HTML, the same server.
+That gap is always network-bound: mobile Lighthouse simulates a slow connection where a request to a
+second origin costs DNS, TCP and TLS before a single byte of content arrives. Desktop barely notices;
+a phone pays for every one.
+
+The page was making three such requests. None of them survived.
+
+| Removed | Weight | What it was doing |
+|---|---|---|
+| `bootstrap.bundle.min.js` | 79 KB | nothing — no `data-bs-*` attribute, no component, never referenced |
+| `bootstrap-icons.css` + woff2 | 97 KB + a font | drawing 24 glyphs |
+| `bootstrap.min.css` | 227 KB (33 KB on the wire) | nine grid classes and two alignment utilities |
+| `gsap` + `ScrollTrigger` | 47 KB | one section's scroll animation |
+
+The icons are now inline SVG lifted verbatim from the same package, so the artwork is identical
+rather than redrawn, sized in `em` and filled with `currentColor` so every existing font-size and
+colour rule kept working untouched. The grid was replaced with about 70 lines carrying Bootstrap
+5.3.8's own breakpoints and container widths — reproduced, not reinterpreted — living inside
+`copilot.css` so it costs no request.
+
+**The grid swap nearly shipped broken.** `copilot.css` declares only `box-sizing` and
+`scroll-behavior`; everything else it assumed came from Bootstrap's Reboot. Without it the body took
+the browser's 8px margin and headings reverted to user-agent defaults. Caught by diffing computed
+styles at six breakpoints before committing, not by reading the file. The replacement now carries the
+slice of Reboot the page actually depends on, and the diff across 375, 576, 768, 992, 1200 and
+1440px is **zero differences** — body, containers, every `col-*`, cards, buttons, and the width and
+left offset of the first 24 columns.
+
+**GSAP was the single biggest item, at +8 points.** It powered a pinned, scroll-scrubbed sequence in
+the POAS section — a real effect on desktop, worth a library. But the same code ran on mobile with
+`pin: false, scrub: false`, which reduces to a staggered fade on viewport entry: exactly what the
+page's own IntersectionObserver already does for every other block. Phones were downloading 47 KB
+from a second origin to reproduce a behaviour that already shipped. Removed entirely at the owner's
+call; the stat card's column already carried `class="col-lg-6 reveal"`, so nothing had to be added
+back.
+
+### The hero was hiding its own LCP element
+
+Lighthouse named `.cp-hero-sub` as the page's Largest Contentful Paint element. It was a `.reveal`
+carrying `--d:2`, so it began at `opacity: 0`, waited 140ms of stagger, then faded for 600ms. LCP
+ignores a fully transparent element — the hero was withholding its largest paint from the clock for
+up to 740ms.
+
+Above the fold there is nothing to reveal; the reader has not scrolled. Hero reveals now hold opacity
+at 1 and animate only the slide, so the text is painted and measured on the first frame while the
+entrance still plays. A controlled A/B on localhost measured **LCP 4.04s → 3.09s**. The homepage hero
+has never used `reveal`, for the same reason.
+
+### Cloudflare was already there, switched off
+
+The domain had been on Cloudflare nameservers for some time with every record on the grey cloud, so
+Cloudflare was serving DNS and nothing else. Turning on the proxy was two toggles, not a migration —
+worth **+3 points**, and it fixed the `uses-http2` opportunity that no code change could reach.
+
+Mail was moved to its own unproxied record first and confirmed by a real delivery before anything was
+proxied. `MX` pointed at the root domain, so proxying it would have sent mail delivery to Cloudflare,
+which does not carry SMTP. The full procedure, the settings that matter, and the rollback are in
+`CLOUDFLARE-RUNBOOK.md`.
+
+Brotli was investigated and dropped: Apache gzips first and Cloudflare will not recompress, and the
+difference measured about 1 KB per file. `http://` returns 403 with no redirect — long-standing origin
+behaviour, not caused by the change, now handled at the edge with *Always Use HTTPS*.
+
+### Motion, on both live pages
+
+A review of the animation code found eight unbounded `transition: all` declarations, two layout-property
+animations, keyframes on views that re-trigger every 4.2 seconds, and a site-wide reveal with no
+reduced-motion path.
+
+- `.work`'s hover inset moves on `transform` rather than `padding`. It also never animated at all:
+  `.work` carries `class="work reveal"`, and `.js .reveal` (0,2,0) has always out-specified `.work`
+  (0,1,0), so the padding snapped. Moving the transition to the children is what makes it run.
+- `.cp-view` moved from a keyframe to transitions. The hero mock re-runs it every 4.2s, and a keyframe
+  restarted from zero on every swap; `ease` is ease-in-out, which held the view back at exactly the
+  moment the eye arrives.
+- `.cp-nav` no longer transitions `padding`. It is `position: fixed` with `backdrop-filter: blur(14px)`,
+  so animating padding made the blur resample a resizing region for 200ms.
+- The homepage `.reveal` gained a `prefers-reduced-motion` path — the largest movement on the site had
+  none, while `/copilot`'s identical reveal has had one since it shipped.
+- Twenty-five hover rules across both stylesheets are now gated behind `(hover: hover) and (pointer: fine)`.
+  On touch the tap fires a synthetic hover and the state sticks after the finger lifts.
+- The hero mock pauses on `focusin`, not only on hover. It cycles every 4200ms and a keyboard user had
+  the view swap out from under them with no way to hold it.
+
+### A note on how this was measured
+
+Local Lighthouse runs against the live site proved useless for comparison: five runs of the same
+unchanged homepage minutes apart scored **76, 76, 87, 98, 97**, with LCP between 2.16s and 5.36s. A
+"regression" was reported during this work that turned out to be nothing but that spread. Every score
+quoted above comes from pagespeed.web.dev; local runs were used only for controlled A/B with one
+variable and both arms measured in the same minute.
+
+One hypothesis was tested and disproved: that the infinite `cp-beta-sweep` rotation was inflating
+Speed Index. With the animation disabled, Speed Index was identical to two decimal places.
+
+**Where it landed:** `/copilot` 68 → **86** on mobile, homepage **97**, desktop 99. No third-party
+resource remains in the critical path on either page; `gtag.js` is the only one left anywhere, and it
+is deferred. Every remaining Lighthouse opportunity reports 0ms.
+
+---
+
 ## 2026-08-04
 
 ### Cookie consent bar with Google Consent Mode v2
