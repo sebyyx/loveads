@@ -1,7 +1,12 @@
 # Turning Cloudflare on for loveads.ro
 
-_Measured 2026-08-09. Verify the "current state" section still holds before following this —
-DNS drifts, and a stale runbook is worse than none._
+> **Done — executed 2026-08-10.** The proxy is live on `loveads.ro` and `www`; mail was moved to its
+> own unproxied record first and verified by a real delivery. What follows is kept as the record of
+> what was changed and why, and as the rollback procedure. Section 9 has the measured outcome and the
+> two things that turned out differently from the plan.
+
+_State below measured 2026-08-09, before the change. Verify anything here still holds before acting
+on it — DNS drifts, and a stale runbook is worse than none._
 
 The nameserver migration everyone dreads **is already done**. The domain has been on Cloudflare
 nameservers for some time, but every record is on the grey cloud, so Cloudflare is serving DNS and
@@ -111,8 +116,22 @@ cPanel's AutoSSL renews by answering an HTTP challenge under `/.well-known/acme-
 Cloudflare caches or intercepts that path, renewal can fail silently and the origin certificate
 expires months later, which is a miserable thing to debug. Add the bypass before you need it.
 
-**Speed → Brotli**, **Network → HTTP/2**, **HTTP/3 (QUIC)** — on by default on the free plan.
-Confirm rather than assume.
+**SSL/TLS → Edge Certificates → Always Use HTTPS → ON.**
+`http://loveads.ro/` returns **403 Forbidden**, with no redirect to HTTPS. Anyone typing the bare
+domain, and every old `http://` link, lands on an error page.
+
+This is **not** caused by Cloudflare — the same request straight to the origin on port 80 returned
+403 before the proxy was switched on, so it is long-standing Apache behaviour that Cloudflare merely
+relays. It is worth fixing here anyway: Cloudflare answers the redirect at the edge and the origin
+never sees the request, so no Apache config has to be touched.
+
+**Network → HTTP/2**, **HTTP/3 (QUIC)** — on by default on the free plan. Confirm rather than assume.
+
+**Speed → Brotli — leave it, it will not take effect.** Apache already sends
+`Content-Encoding: gzip`, and Cloudflare does not recompress a response that arrives compressed.
+Measured on `site.css`: 30489 B raw → 7305 B gzip; Brotli would land near 6282 B. **About 1 KB per
+file.** Claiming it means disabling gzip in the hosting config so Cloudflare can compress instead —
+a change to the origin's Apache setup for a kilobyte. Not worth it.
 
 **Do not enable Auto Minify / Rocket Loader.** Rocket Loader reorders script execution, and this site
 has an inline Consent Mode block whose ordering is load-bearing: the consent defaults must run before
@@ -182,3 +201,40 @@ page, which is far wider than the effect being measured.
 Flip the two records back to grey. DNS TTLs are ~35s, so recovery is about a minute. If mail was
 already moved to `mail.loveads.ro` in section 2, leave it there — that change is correct and worth
 keeping regardless of whether the proxy stays on.
+
+---
+
+## 9. What actually happened — verified 2026-08-10
+
+Measured against the edge, forcing resolution past a stale local resolver
+(`curl --resolve loveads.ro:443:<edge-ip>` — without it the system resolver kept serving the old
+origin IP and every check looked like the change had not applied).
+
+| Check | Result |
+| --- | --- |
+| Proxy active | `server: cloudflare`, `cf-ray` present |
+| **HTTP/2** | `HTTP/2 200` — this was the 290ms `uses-http2` opportunity |
+| HTTP/3 | advertised via `alt-svc: h3=":443"` |
+| Edge cache, `site.css` | `cf-cache-status: HIT` |
+| HTML | `DYNAMIC` — not cached, correct |
+| `/.well-known/acme-challenge/*` | `DYNAMIC` — the bypass rule works, AutoSSL can still renew |
+| Mail | `MX → mail.loveads.ro → 88.99.253.220`, off the proxy, delivery confirmed by a real send |
+| `loveads.ro`, `www` | proxied (188.114.x) |
+| `mail`, `copilot`, `send` | grey, unchanged |
+
+**Two things differed from the plan:**
+
+1. **`http://` returns 403 and always did.** Discovered while verifying, not caused by the change —
+   the origin returns 403 on port 80 by itself. Fixed with *Always Use HTTPS* rather than by touching
+   Apache. See section 4.
+
+2. **Brotli never engages**, because the origin gzips first. Worth about 1 KB per file. Dropped as not
+   worth an origin config change. See section 4.
+
+**One gotcha for whoever verifies next:** the wildcard in the cache rule needs the trailing `*`.
+`/.well-known/` on its own matches only that exact path, not `/.well-known/acme-challenge/<token>` —
+the rule would exist and quietly do nothing. The deployed expression is
+`(http.request.uri.path wildcard r"/.well-known/*")`.
+
+Fonts and `consent.js` still showed `MISS` right after the switch. That is normal; they fill in as
+visitors arrive.
