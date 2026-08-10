@@ -1,6 +1,6 @@
 # loveads.ro — Work Log & Project Reference
 
-_Last updated: 2026-08-03_
+_Last updated: 2026-08-10_
 
 A dated summary of what shipped lives in `CHANGELOG.md`; this document captures the
 non-obvious detail behind it.
@@ -237,7 +237,25 @@ Accessibility, Best Practices and SEO**.
   opacity transition, so the audit was sampling mid-fade. Resting contrast measures 4.89–9.50:1.
   Before chasing a contrast failure, check whether the element is inside something that animates.
 
-### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger
+### The POAS scroll moment (2026-08-02) — GSAP ScrollTrigger — **REMOVED 2026-08-10**
+
+> **This no longer exists.** GSAP and ScrollTrigger were deleted on 2026-08-10: 47 KB from a second
+> origin, and about 0.7s of extra main-thread work, for one section. Removing them took `/copilot`
+> from 78 to 86 on mobile — the single largest gain of that cycle.
+>
+> The deciding argument was that the effect below was **desktop-only in practice**. On phones the same
+> code ran with `pin: false, scrub: false`, which reduces to a staggered fade on viewport entry —
+> exactly what the page's own IntersectionObserver already does for every other block. Phones were
+> downloading a library to reproduce behaviour that already shipped.
+>
+> Nothing had to replace it. The stat card's column already carries `class="col-lg-6 reveal"
+> style="--d:1"`, so it fades in through the existing observer, and the five count-ups returned to the
+> page-wide `cio` observer that `initPoasProof()` used to take them off.
+>
+> **If you ever bring it back:** load it on desktop only (`matchMedia('(min-width: 900px)')` before
+> injecting the scripts), and self-host rather than pulling from jsDelivr — the origin handshake cost
+> more than the bytes. The reasoning below is kept because it is still the right argument for *why*
+> one section should earn motion; only the implementation was wrong for mobile.
 
 Spec: `docs/superpowers/specs/2026-08-02-copilot-poas-scroll-moment-design.md`.
 
@@ -346,6 +364,41 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - 100vh heroes fill the headless window — collapse `min-height` (or use full-page capture) to see lower
   sections; `.reveal`/`.fade-up` start at `opacity:0` so force them visible for static screenshots.
 - Local serve: `python3 -m http.server 8765` from repo root (root-relative `/includes/...` paths need it).
+- **PHP does not run locally** (no `php` on this machine), so `python3 -m http.server` serves `.php` as a
+  download. Render the few PHP expressions into a throwaway `.html` at the repo root — the absolute
+  `/includes` paths need it there — test that, then delete it.
+
+### Measuring performance (added 2026-08-10, learned the hard way)
+
+- **Local Lighthouse against the live site cannot be compared run to run.** Five runs of the same
+  unchanged homepage, minutes apart from this machine: Performance **76, 76, 87, 98, 97**; LCP 2.16s
+  to 5.36s. A 22-point spread with nothing changing. A single run is not a baseline, and a later run
+  scoring worse proves nothing — a "regression" was reported during the 2026-08-10 cycle that was
+  entirely this.
+- **Real numbers come from [pagespeed.web.dev](https://pagespeed.web.dev)**, run by the owner. The PSI
+  *API* (`pagespeedonline/v5/runPagespeed`) has a shared keyless quota that was exhausted on every
+  attempt — do not plan around it.
+- **Local Lighthouse is still the right tool for a controlled A/B:** same machine, same minute, one
+  variable, two or more runs per arm. Absolute numbers will not match production (localhost has no
+  document latency) but the *delta* transfers. This is how the hero LCP fix was measured at −0.95s.
+- **The opportunity list is stable even when the score is not.** `render-blocking-resources`,
+  `uses-http2`, `unused-javascript` are structural. Read those, not the number.
+- **Disable the cache between before/after captures.** Reusing one Chrome instance across both arms
+  served a cached stylesheet and produced **487 phantom differences** in a computed-style diff. Send
+  `Network.setCacheDisabled {cacheDisabled: true}`, or use a fresh `--user-data-dir` per arm.
+- **`getComputedStyle` immediately after toggling a class returns the transition's *starting* value**,
+  not its end state. A drawer that moved 170px measured as 0 travel. Await `transitionend` with a
+  timeout fallback before snapshotting.
+- **A stale system resolver will make a DNS change look like it failed.** After the Cloudflare switch,
+  `curl` kept hitting the old origin IP and every check said nothing had applied. Force it:
+  `curl --resolve host:443:<ip>`, and query authority directly with `dig @<nameserver>`.
+- **Pixel-diffing screenshots needs a control.** `/copilot` showed differences at five of six
+  breakpoints after the grid swap; capturing twice from *identical* code reproduced them in the same
+  region at the same magnitude (309 vs 311 px at 992). The cause was `cp-beta-sweep`, a 5s infinite
+  rotation caught at different phases. Always diff a same-code pair before believing a before/after one.
+- **One hypothesis tested and disproved**, recorded so it is not retried: that the infinite
+  `cp-beta-sweep` inflates Speed Index. With the animation disabled, Speed Index was identical to two
+  decimal places. Live SI was high for network reasons, not animation.
 
 ---
 
@@ -358,9 +411,32 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 - **Closed 2026-08-02:** the repo cleanup below settled this. `main.css` and the orphaned assets were
   removed from git; the untracked 2018–2019 files stay on the local machine (git never held them, so
   deleting would be irreversible, and they never deploy).
-- Second scroll moment candidate: the **Decision Loop** (Detect → Recommend → Act → Review → Learn).
-  Deliberately deferred — two pinned moments on one page dilute each other. Revisit only if the POAS
-  moment proves itself.
+- ~~Second scroll moment candidate: the **Decision Loop**~~ — moot as of 2026-08-10. The POAS moment
+  itself was removed for weight, so there is no pinned moment to dilute. Any future scroll-driven
+  effect should be desktop-gated and self-hosted from the start.
+
+**Added 2026-08-10:**
+
+- **`hai-sa-ne-cunoastem.php` is not shippable.** Untracked in the working tree. Its two forms post to
+  `action=""` with no handler, so submissions are silently discarded — and simply pointing them at
+  `contact.php` would not work either: that handler `silent_ok()`s anything without `_js=1` and
+  `_elapsed >= 3000`, so every submission would return success and send nothing. All 17 of its images
+  are missing from the repo, and both its font families are gitignored on purpose (`.gitignore:45-46`).
+  Do not deploy it without resolving all three.
+- **`copilot.loveads.ro` ships no security headers.** Checked 2026-08-10: TLS 1.3, valid Let's Encrypt
+  cert, HTTP→HTTPS redirect, TLS 1.0/1.1 rejected — the transport is fine. But
+  `strict-transport-security`, `content-security-policy`, `x-content-type-options`, `x-frame-options`,
+  `referrer-policy` and `permissions-policy` are all absent. Without frame protection the app can be
+  iframed anywhere, which matters for a login screen. Caddy sits in front; a few lines there would fix
+  it. `loveads.ro` has no HSTS either, but that one is a Cloudflare toggle now.
+- **~80 design-system findings in `copilot.css`** (colours, font sizes, radii outside `DESIGN.md`) plus
+  `.cp-hero-grid`'s decorative grid background. All predate this cycle and none were touched. A
+  design-system conversation, not a performance one — worth doing with the whole file in view.
+- **Remaining performance items are marginal.** Every Lighthouse opportunity now reports 0ms.
+  `loveads-logo-dark.png` is 739×160 at 25.6 KB but displays at 139×30 — resizing to 278×60 takes it to
+  11.2 KB, worth doing for tidiness rather than for the score. `unminified-css` offers 3 KB.
+- **Brotli will not engage** while Apache gzips first; Cloudflare does not recompress. Measured at
+  ~1 KB per file on `site.css`. Deliberately dropped — see `CLOUDFLARE-RUNBOOK.md` §4.
 - Resolved 2026-08-02: **`/copilot` reveal is now `.js`-gated** (was the long-standing no-JS gap).
 - Resolved this cycle: homepage no-JS fallback (new `.js .reveal` design); Copilot hero mock height jump
   (the 3 auto-cycling views had different heights → ~286 px page jump every 4.2 s; now grid-stacked to a
