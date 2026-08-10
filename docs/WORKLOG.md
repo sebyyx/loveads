@@ -350,10 +350,16 @@ mobile horizontal drag = the sticky nav's buttons, not the section where you not
 ## 8. Design tokens
 
 - **Homepage + legal (light, since 2026-06-15 redesign):** canvas `#f4f3f0`, ink `#19191b`, crimson
-  accent `#d0224c`, **Geist** + Geist Mono. Defined in `site.css` `:root`. (The old homepage was dark
-  `#0f172a` / indigo `#6366f1` / Inter on `main.css` — now replaced.)
-- **Copilot landing (light):** canvas `#fff`/`#f7f7f9`, crimson `#d0224c`, ink `#15151a`, Geist font.
-- The whole site now shares one crimson + Geist identity (homepage, copilot, legal).
+  accent `#d0224c`. Defined in `site.css` `:root`. (The old homepage was dark `#0f172a` / indigo
+  `#6366f1` / Inter on `main.css` — now replaced.)
+- **Copilot landing (light):** canvas `#fff`/`#f7f7f9`, crimson `#d0224c`, ink `#15151a`.
+- **Type, both surfaces, since 2026-08-03:** **Archivo** 700 at `wdth` 92 (display), **Geist**
+  (body and UI), **IBM Plex Mono** (figures and labels) — all self-hosted from `includes/fonts/`.
+  This list previously read "Geist + Geist Mono", which the 2026-08-03 typography work replaced;
+  see §6 Typography for why. `DESIGN.md` is normative for the tokens.
+- The whole site shares one crimson accent and one type system (homepage, copilot, legal). What still
+  diverges on `/copilot` is the ground — `#ffffff` rather than the warm panel grey — which `DESIGN.md`
+  records as design debt.
 - **About-section skill chips** (`.chip` in `site.css`, 2026-06-16): Geist **sans** (not mono),
   `border-radius:9px` (not a 999px pill), a crimson `::before` dot (`var(--accent)`, 6px),
   `var(--text)` label on `var(--surface)` with a `var(--line-2)` border. Labels were also shortened
